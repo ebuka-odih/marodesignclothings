@@ -53,6 +53,34 @@
                 min-height: 100vh;
                 min-height: -webkit-fill-available;
             }
+            
+            /* Hide desktop menu on mobile */
+            .desktop-menu {
+                display: none !important;
+            }
+            
+            /* Show mobile menu button on mobile */
+            button#menuToggle {
+                display: flex !important;
+            }
+        }
+        
+        /* Desktop styles */
+        @media (min-width: 769px) {
+            /* Show desktop menu on desktop */
+            .desktop-menu {
+                display: flex !important;
+            }
+            
+            /* Hide mobile menu button on desktop */
+            button#menuToggle {
+                display: none !important;
+            }
+            
+            /* Hide mobile menu overlay on desktop */
+            #mobileMenuOverlay {
+                display: none !important;
+            }
         }
         
         /* iOS Safari specific fixes */
@@ -115,6 +143,22 @@
             </a>
         </div>
         
+        <!-- Desktop Menu (Center) -->
+        <nav style="display: none; align-items: center; gap: 48px;" class="desktop-menu">
+            <a href="{{ route('index') }}" style="text-decoration: none; color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s ease;">
+                Home
+            </a>
+            <a href="#" style="text-decoration: none; color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s ease;">
+                Collection
+            </a>
+            <a href="#" style="text-decoration: none; color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s ease;">
+                About
+            </a>
+            <a href="#" style="text-decoration: none; color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s ease;">
+                Contact
+            </a>
+        </nav>
+        
         <!-- Right side icons - Cart and Menu only -->
         <div style="display: flex; align-items: center; gap: 20px;">
             <!-- Cart -->
@@ -128,13 +172,52 @@
             </x-splade-link>
             
             <!-- Menu -->
-            <button id="menuToggle" style="background: none; border: none; color: black; display: flex; align-items: center; cursor: pointer;">
+            <button id="menuToggle" style="background: none; border: none; color: black; display: flex; align-items: center; cursor: pointer; display: none;">
                 <svg style="width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
                 </svg>
             </button>
         </div>
     </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenuOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000; display: none; opacity: 0; transition: opacity 0.3s ease;">
+        <!-- Mobile Menu Sidebar -->
+        <div id="mobileMenuSidebar" style="position: fixed; top: 0; right: 0; width: 300px; height: 100%; background: white; transform: translateX(100%); transition: transform 0.3s ease; z-index: 1001; overflow-y: auto;">
+            <!-- Close Button -->
+            <div style="display: flex; justify-content: flex-end; padding: 20px;">
+                <button id="closeMobileMenu" style="background: black; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease;">
+                    <svg style="width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2;" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Menu Items -->
+            <nav style="padding: 0 20px 40px;">
+                <div style="display: flex; flex-direction: column; gap: 0;">
+                    <a href="{{ route('index') }}" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; text-decoration: none; color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 16px; font-weight: 500; border-bottom: 1px solid #f0f0f0; transition: none; pointer-events: auto; user-select: none; -webkit-tap-highlight-color: transparent; outline: none;">
+                        <span>Home</span>
+                    </a>
+                    
+                    <a href="#" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; text-decoration: none; color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 16px; font-weight: 500; border-bottom: 1px solid #f0f0f0; transition: none; pointer-events: auto; user-select: none; -webkit-tap-highlight-color: transparent; outline: none;">
+                        <span>Collections</span>
+                        <svg style="width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2;" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+                    
+                    <a href="#" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; text-decoration: none; color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 16px; font-weight: 500; border-bottom: 1px solid #f0f0f0; transition: none; pointer-events: auto; user-select: none; -webkit-tap-highlight-color: transparent; outline: none;">
+                        <span>About</span>
+                    </a>
+                    
+                    <a href="#" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; text-decoration: none; color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 16px; font-weight: 500; border-bottom: 1px solid #f0f0f0; transition: none; pointer-events: auto; user-select: none; -webkit-tap-highlight-color: transparent; outline: none;">
+                        <span>Contact</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </div>
 
     <!-- Main Content -->
     <main style="background: white; min-height: calc(100vh - 140px);">
@@ -187,6 +270,55 @@
                     console.log('Menu clicked');
                 });
             }
+            
+            // Mobile menu functionality
+            const mobileMenuToggle = document.getElementById('menuToggle');
+            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+            const mobileMenuSidebar = document.getElementById('mobileMenuSidebar');
+            const closeMobileMenu = document.getElementById('closeMobileMenu');
+            
+            function openMobileMenu() {
+                mobileMenuOverlay.style.display = 'block';
+                setTimeout(() => {
+                    mobileMenuOverlay.style.opacity = '1';
+                    mobileMenuSidebar.style.transform = 'translateX(0)';
+                }, 10);
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            }
+            
+            function closeMobileMenuFunc() {
+                mobileMenuOverlay.style.opacity = '0';
+                mobileMenuSidebar.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    mobileMenuOverlay.style.display = 'none';
+                }, 300);
+                document.body.style.overflow = ''; // Restore scrolling
+            }
+            
+            // Event listeners for mobile menu
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', openMobileMenu);
+            }
+            
+            if (closeMobileMenu) {
+                closeMobileMenu.addEventListener('click', closeMobileMenuFunc);
+            }
+            
+            // Close menu when clicking overlay
+            if (mobileMenuOverlay) {
+                mobileMenuOverlay.addEventListener('click', function(e) {
+                    if (e.target === mobileMenuOverlay) {
+                        closeMobileMenuFunc();
+                    }
+                });
+            }
+            
+            // Close menu on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && mobileMenuOverlay.style.display === 'block') {
+                    closeMobileMenuFunc();
+                }
+            });
         });
         
         // Global cart sidebar functions

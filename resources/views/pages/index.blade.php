@@ -109,6 +109,47 @@
         </div>
     </div>
     
+    <!-- Image Collage Section -->
+    <div style="background: #8B4513; padding: 60px 20px; min-height: 600px; border: 2px solid red;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <!-- Debug Text -->
+            <div style="color: white; text-align: center; margin-bottom: 20px; font-size: 18px;">
+                IMAGE COLLAGE SECTION - SHOULD BE VISIBLE
+            </div>
+            
+            <!-- Two Images Side by Side -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px;">
+                <!-- Left Image -->
+                <div style="height: 500px; overflow: hidden; border: 2px solid white;">
+                    <img src="{{ url('/media/7.jpeg') }}" 
+                         alt="Fashion Model 1" 
+                         style="width: 100%; height: 100%; object-fit: cover;"
+                         onerror="console.log('Image 7.jpeg failed to load')"
+                         onload="console.log('Image 7.jpeg loaded successfully')">
+                </div>
+                
+                <!-- Right Image -->
+                <div style="height: 500px; overflow: hidden; border: 2px solid white;">
+                    <img src="{{ url('/media/8.jpeg') }}" 
+                         alt="Fashion Model 2" 
+                         style="width: 100%; height: 100%; object-fit: cover;"
+                         onerror="console.log('Image 8.jpeg failed to load')"
+                         onload="console.log('Image 8.jpeg loaded successfully')">
+                </div>
+            </div>
+            
+            <!-- Text Under Images -->
+            <div style="text-align: center;">
+                <h3 style="color: white; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 28px; font-weight: 300; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px;">
+                    THE CAMPAIGN
+                </h3>
+                <p style="color: white; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 16px; font-weight: 300; letter-spacing: 0.05em; line-height: 1.6; max-width: 600px; margin: 0 auto;">
+                    Capturing the essence of contemporary style through authentic moments and genuine expressions. Each image tells a story of individuality and confidence.
+                </p>
+            </div>
+        </div>
+    </div>
+    
     <!-- Product Grid Section -->
     <div style="background: white; padding: 40px 20px;">
         <div style="max-width: 1200px; margin: 0 auto;">
