@@ -30,6 +30,18 @@ class HomeController extends Controller
         
         return view('pages.product-show', compact('product'));
     }
+
+    public function shop()
+    {
+        $products = Product::with(['images' => function($query) {
+            $query->orderBy('sort_order');
+        }, 'category'])
+        ->where('is_active', true)
+        ->orderBy('created_at', 'desc')
+        ->get();
+        
+        return view('pages.shop', compact('products'));
+    }
     
     public function verifyComingSoonPassword(Request $request)
     {

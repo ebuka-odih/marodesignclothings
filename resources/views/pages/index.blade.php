@@ -69,7 +69,7 @@
     </div>
     
     <!-- Video Section -->
-    <div style="position: relative; width: 100%; height: 100vh; overflow: hidden;">
+    <div style="position: relative; width: 100%; height: 80vh; overflow: hidden;">
         <video 
             autoplay 
             loop 
@@ -95,7 +95,7 @@
     </div>
     
     <!-- Text Section Under Video -->
-    <div style="background: white; padding: 80px 20px; text-align: center;">
+    <div style="background: white; padding: 40px 20px; text-align: center;">
         <div style="max-width: 800px; margin: 0 auto;">
             <h2 style="color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 36px; font-weight: 300; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 24px;">
                 IDENTITIES
