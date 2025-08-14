@@ -203,11 +203,110 @@
     });
 
     function addToCart() {
-        // Add to cart functionality
-        console.log('Adding to cart...');
-        // You can implement the actual add to cart logic here
-        // Example: Redirect to cart or show success message
-        alert('Product added to cart!');
+        // Get the product ID from the page
+        const productId = '{{ $product->id }}';
+        const quantity = 1; // Default quantity
+        
+        // Show loading state
+        const button = event.target;
+        const originalText = button.textContent;
+        button.textContent = 'Adding...';
+        button.disabled = true;
+        
+        // Create form data
+        const formData = new FormData();
+        formData.append('product_id', productId);
+        formData.append('quantity', quantity);
+        formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+        
+        // Send AJAX request
+        fetch('{{ route("cart.add") }}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update cart count
+                updateCartCount(data.cart_count);
+                
+                // Show success message
+                showNotification('Product added to cart successfully!', 'success');
+                
+                // Reset button
+                button.textContent = originalText;
+                button.disabled = false;
+            } else {
+                // Show error message
+                showNotification(data.message || 'Error adding product to cart', 'error');
+                
+                // Reset button
+                button.textContent = originalText;
+                button.disabled = false;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('Error adding product to cart', 'error');
+            
+            // Reset button
+            button.textContent = originalText;
+            button.disabled = false;
+        });
+    }
+    
+    function updateCartCount(count) {
+        const cartCountElement = document.getElementById('cartCount');
+        if (cartCountElement) {
+            cartCountElement.textContent = count;
+            cartCountElement.style.display = count > 0 ? 'flex' : 'none';
+        }
+    }
+    
+    function showNotification(message, type) {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 4px;
+            color: white;
+            font-weight: 500;
+            z-index: 10000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            max-width: 300px;
+            word-wrap: break-word;
+        `;
+        
+        if (type === 'success') {
+            notification.style.backgroundColor = '#10b981';
+        } else {
+            notification.style.backgroundColor = '#ef4444';
+        }
+        
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        
+        // Animate in
+        setTimeout(() => {
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
     }
 
     function shopNow() {

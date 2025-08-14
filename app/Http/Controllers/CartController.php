@@ -26,11 +26,23 @@ class CartController extends Controller
         $product = Product::find($request->product_id);
         if (!$product) {
             \Log::error('Product not found', ['product_id' => $request->product_id]);
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Product not found.'
+                ], 404);
+            }
             return back()->with('cart_error', 'Product not found.');
         }
         
         // Check if product is in stock
         if ($product->stock < $request->quantity) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Not enough stock available. Only ' . $product->stock . ' items left.'
+                ], 400);
+            }
             return back()->with('cart_error', 'Not enough stock available. Only ' . $product->stock . ' items left.');
         }
 
@@ -43,6 +55,12 @@ class CartController extends Controller
             
             // Check if new total quantity exceeds stock
             if ($newQuantity > $product->stock) {
+                if ($request->ajax()) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Cannot add more items. Only ' . $product->stock . ' items available in total.'
+                    ], 400);
+                }
                 return back()->with('cart_error', 'Cannot add more items. Only ' . $product->stock . ' items available in total.');
             }
             
@@ -68,6 +86,15 @@ class CartController extends Controller
             'quantity' => $request->quantity,
             'cart_count' => $this->getCartCount()
         ]);
+
+        // Check if it's an AJAX request
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => $product->name . ' added to cart successfully!',
+                'cart_count' => $this->getCartCount()
+            ]);
+        }
 
         return back()->with('cart_message', $product->name . ' added to cart successfully!');
     }

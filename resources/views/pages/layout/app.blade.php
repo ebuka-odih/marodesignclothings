@@ -243,10 +243,14 @@
                     <!-- Right Icons -->
                     <div style="display: flex; align-items: center; gap: 20px;">
                         <!-- Cart -->
-                        <button onclick="openCartSidebar()" style="background: none; border: none; color: black; display: flex; align-items: center; cursor: pointer;">
+                        <button onclick="openCartSidebar()" style="background: none; border: none; color: black; display: flex; align-items: center; cursor: pointer; position: relative;">
                             <svg style="width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6m8 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01"/>
+                                <path d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 22C20.5523 22 21 21.5523 21 21C21 20.4477 20.5523 20 20 20C19.4477 20 19 20.4477 19 21C19 21.5523 19.4477 22 20 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M1 1H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
+                            <!-- Cart Count Badge -->
+                            <span id="cartCount" style="position: absolute; top: -8px; right: -8px; background: black; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; min-width: 18px;">{{ session('cart') ? count(session('cart')) : 0 }}</span>
                         </button>
 
                         <!-- Menu -->
@@ -604,6 +608,24 @@
             setTimeout(removeSpladeScriptsText, 100);
             setTimeout(removeSpladeScriptsText, 500);
             setTimeout(removeSpladeScriptsText, 1000);
+            
+            // Global function to update cart count
+            function updateCartCount(count) {
+                const cartCountElement = document.getElementById('cartCount');
+                if (cartCountElement) {
+                    cartCountElement.textContent = count;
+                    cartCountElement.style.display = count > 0 ? 'flex' : 'none';
+                }
+            }
+            
+            // Initialize cart count on page load
+            document.addEventListener('DOMContentLoaded', function() {
+                const cartCountElement = document.getElementById('cartCount');
+                if (cartCountElement) {
+                    const currentCount = parseInt(cartCountElement.textContent) || 0;
+                    cartCountElement.style.display = currentCount > 0 ? 'flex' : 'none';
+                }
+            });
         </script>
     </div>
     
