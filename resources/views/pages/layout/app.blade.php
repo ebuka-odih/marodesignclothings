@@ -215,23 +215,48 @@
             <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <!-- Brand Logo -->
-                    <div style="flex: 1;">
+                    <div style="flex: 0 0 auto;">
                         <h1 style="color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 24px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; margin: 0;">
                             {{ env('APP_NAME') }}
                         </h1>
                     </div>
 
                     <!-- Desktop Menu (Center) -->
-                    <nav class="hidden md:flex items-center gap-12">
+                    <nav class="hidden md:flex items-center gap-12" style="margin-left: -100px;">
                         <a href="{{ route('index') }}" style="text-decoration: none; color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s ease;">
                             Home
                         </a>
-                        <a href="{{ route('shop') }}" style="text-decoration: none; color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s ease;">
-                        <span>Shop</span>
-                            <svg style="width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2;" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </a>
+                        
+                        <!-- Shop Dropdown -->
+                        <div class="relative group">
+                            <button class="flex items-center gap-1 text-black font-medium text-sm uppercase tracking-wide hover:text-gray-600 transition-colors duration-200" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; background: none; border: none; cursor: pointer;">
+                                Shop
+                                <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <!-- Dropdown Menu -->
+                            <div class="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                                <div class="py-1">
+                                    <a href="{{ route('shop') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150">
+                                        All Products
+                                    </a>
+                                    <a href="{{ route('shop') }}?category=shirt" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150">
+                                        Shirts
+                                    </a>
+                                    <a href="{{ route('shop') }}?category=jacket" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150">
+                                        Jackets
+                                    </a>
+                                    <a href="{{ route('shop') }}?category=jeans" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150">
+                                        Jeans
+                                    </a>
+                                    <a href="{{ route('shop') }}?category=shorts" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150">
+                                        Shorts
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <a href="#" style="text-decoration: none; color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s ease;">
                             About
                         </a>
@@ -243,15 +268,15 @@
                     <!-- Right Icons -->
                     <div style="display: flex; align-items: center; gap: 20px;">
                         <!-- Cart -->
-                        <button onclick="openCartSidebar()" style="background: none; border: none; color: black; display: flex; align-items: center; cursor: pointer; position: relative;">
+                        <a href="{{ route('cart.index') }}" style="background: none; border: none; color: black; display: flex; align-items: center; cursor: pointer; position: relative; text-decoration: none;">
                             <svg style="width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M20 22C20.5523 22 21 21.5523 21 21C21 20.4477 20.5523 20 20 20C19.4477 20 19 20.4477 19 21C19 21.5523 19.4477 22 20 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M1 1H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                             <!-- Cart Count Badge -->
-                            <span id="cartCount" style="position: absolute; top: -8px; right: -8px; background: black; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; min-width: 18px;">{{ session('cart') ? count(session('cart')) : 0 }}</span>
-                        </button>
+                            <span id="cartCount" style="position: absolute; top: -8px; right: -8px; background: black; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; min-width: 18px;">{{ session('cart') ? array_sum(array_column(session('cart'), 'quantity')) : 0 }}</span>
+                        </a>
 
                         <!-- Menu -->
                         <button id="menuToggle" class="md:hidden flex items-center bg-none border-none text-black cursor-pointer">
@@ -285,9 +310,9 @@
                         
                         <a href="{{ route('shop') }}" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; text-decoration: none; color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 16px; font-weight: 500; border-bottom: 1px solid #f0f0f0; transition: none; pointer-events: auto; user-select: none; -webkit-tap-highlight-color: transparent; outline: none;">
                             <span>Shop</span>
-                            <svg style="width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2;" viewBox="0 0 24 24">
+                            <!-- <svg style="width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2;" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
-                            </svg>
+                            </svg> -->
                         </a>
                         
                         <a href="#" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; text-decoration: none; color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 16px; font-weight: 500; border-bottom: 1px solid #f0f0f0; transition: none; pointer-events: auto; user-select: none; -webkit-tap-highlight-color: transparent; outline: none;">

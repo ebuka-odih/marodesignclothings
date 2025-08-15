@@ -84,7 +84,7 @@
                 @endif
                 
                 <button onclick="shopNow()" class="flex-1 border-2 border-black text-black py-3 px-4 rounded-none hover:bg-black hover:text-white transition-colors duration-200 font-medium uppercase tracking-wide text-sm">
-                    Shop Now
+                    Shop On Whatsapp
                 </button>
             </div>
 
