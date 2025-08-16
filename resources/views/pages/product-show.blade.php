@@ -26,18 +26,18 @@
                 </div>
             @endif
 
-            <!-- Navigation Arrows -->
-            @if($productImages->count() > 1)
+                    <!-- Navigation Arrows -->
+                    @if($productImages->count() > 1)
                 <button id="prevBtn" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition-all duration-200">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                    </svg>
-                </button>
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </button>
                 <button id="nextBtn" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition-all duration-200">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                </button>
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </button>
 
                 <!-- Image Counter -->
                 <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm">
@@ -96,7 +96,7 @@
                         <span class="ml-2">{{ $product->category->name }}</span>
                     </div>
                 @endif
-                
+
                 <div>
                     <span class="font-medium">Availability:</span>
                     @if($product->stock > 0)
@@ -105,7 +105,7 @@
                         <span class="ml-2 text-red-600">Out of Stock</span>
                     @endif
                 </div>
-                
+
                 @if($product->sku)
                     <div>
                         <span class="font-medium">SKU:</span>

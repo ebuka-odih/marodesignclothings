@@ -23,15 +23,15 @@
                                                         </div>
                                                     </div>
                                                     <div class="data">
-                                                        <div class="amount">$74,958.49</div>
-                                                        <div class="info"><strong>$7,395.37</strong> in last month</div>
+                                                        <div class="amount">₦{{ number_format($totalSales, 2) }}</div>
+                                                        <div class="info"><strong>₦{{ number_format($lastMonthSales, 2) }}</strong> in last month</div>
                                                     </div>
                                                     <div class="data"><h6 class="sub-title">This week so far</h6>
                                                         <div class="data-group">
-                                                            <div class="amount">$1,338.72</div>
+                                                            <div class="amount">₦{{ number_format($thisWeekSales, 2) }}</div>
                                                             <div class="info text-end"><span
-                                                                    class="change up text-danger"><em
-                                                                        class="icon ni ni-arrow-long-up"></em>4.63%</span><br><span>vs. last week</span>
+                                                                    class="change {{ $salesGrowth >= 0 ? 'up text-danger' : 'down text-success' }}"><em
+                                                                        class="icon ni ni-arrow-long-{{ $salesGrowth >= 0 ? 'up' : 'down' }}"></em>{{ number_format(abs($salesGrowth), 1) }}%</span><br><span>vs. last week</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -50,7 +50,7 @@
                                             <div class="nk-ecwg nk-ecwg2">
                                                 <div class="card-inner">
                                                     <div class="card-title-group mt-n1">
-                                                        <div class="card-title"><h6 class="title">Averarge order</h6>
+                                                        <div class="card-title"><h6 class="title">Average order</h6>
                                                         </div>
                                                         <div class="card-tools me-n1">
                                                             <div class="dropdown"><a href="#"
@@ -72,10 +72,10 @@
                                                     </div>
                                                     <div class="data">
                                                         <div class="data-group">
-                                                            <div class="amount">$463.35</div>
+                                                            <div class="amount">₦{{ number_format($averageOrderValue, 2) }}</div>
                                                             <div class="info text-end"><span
-                                                                    class="change up text-danger"><em
-                                                                        class="icon ni ni-arrow-long-up"></em>4.63%</span><br><span>vs. last week</span>
+                                                                    class="change {{ $avgOrderGrowth >= 0 ? 'up text-danger' : 'down text-success' }}"><em
+                                                                        class="icon ni ni-arrow-long-{{ $avgOrderGrowth >= 0 ? 'up' : 'down' }}"></em>{{ number_format(abs($avgOrderGrowth), 1) }}%</span><br><span>vs. last week</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -98,10 +98,10 @@
                                                             </div>
                                                             <div class="data">
                                                                 <div class="data-group">
-                                                                    <div class="amount">329</div>
+                                                                    <div class="amount">{{ $totalOrders }}</div>
                                                                     <div class="info text-end"><span
-                                                                            class="change up text-danger"><em
-                                                                                class="icon ni ni-arrow-long-up"></em>4.63%</span><br><span>vs. last week</span>
+                                                                            class="change {{ $ordersGrowth >= 0 ? 'up text-danger' : 'down text-success' }}"><em
+                                                                                class="icon ni ni-arrow-long-{{ $ordersGrowth >= 0 ? 'up' : 'down' }}"></em>{{ number_format(abs($ordersGrowth), 1) }}%</span><br><span>vs. last week</span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -125,10 +125,10 @@
                                                             </div>
                                                             <div class="data">
                                                                 <div class="data-group">
-                                                                    <div class="amount">194</div>
+                                                                    <div class="amount">{{ $totalCustomers }}</div>
                                                                     <div class="info text-end"><span
-                                                                            class="change up text-danger"><em
-                                                                                class="icon ni ni-arrow-long-up"></em>4.63%</span><br><span>vs. last week</span>
+                                                                            class="change {{ $customersGrowth >= 0 ? 'up text-danger' : 'down text-success' }}"><em
+                                                                                class="icon ni ni-arrow-long-{{ $customersGrowth >= 0 ? 'up' : 'down' }}"></em>{{ number_format(abs($customersGrowth), 1) }}%</span><br><span>vs. last week</span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -160,102 +160,43 @@
                                                     <div class="nk-tb-col"><span
                                                             class="d-none d-sm-inline">Status</span></div>
                                                 </div>
+                                                @forelse($recentOrders as $order)
                                                 <div class="nk-tb-item">
-                                                    <div class="nk-tb-col"><span class="tb-lead"><a href="#">#95954</a></span>
+                                                    <div class="nk-tb-col"><span class="tb-lead"><a href="{{ route('admin.orders.show', $order) }}">#{{ $order->order_number }}</a></span>
                                                     </div>
                                                     <div class="nk-tb-col tb-col-sm">
                                                         <div class="user-card">
-                                                            <div class="user-avatar sm bg-purple-dim"><span>AB</span>
+                                                            <div class="user-avatar sm bg-purple-dim">
+                                                                <span>{{ strtoupper(substr($order->shipping_name ?? 'GUEST', 0, 2)) }}</span>
                                                             </div>
-                                                            <div class="user-name"><span class="tb-lead">Abu Bin Ishtiyak</span>
+                                                            <div class="user-name"><span class="tb-lead">{{ $order->shipping_name ?? 'Guest User' }}</span>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="nk-tb-col tb-col-md"><span
-                                                            class="tb-sub">02/11/2020</span></div>
+                                                            class="tb-sub">{{ $order->created_at->format('M d, Y') }}</span></div>
                                                     <div class="nk-tb-col"><span
-                                                            class="tb-sub tb-amount">4,596.75 <span>USD</span></span>
+                                                            class="tb-sub tb-amount">{{ number_format($order->total, 2) }} <span>₦</span></span>
                                                     </div>
-                                                    <div class="nk-tb-col"><span
-                                                            class="badge badge-dot badge-dot-xs bg-success">Paid</span>
+                                                    <div class="nk-tb-col">
+                                                        @if($order->payment_status === 'paid')
+                                                            <span class="badge badge-dot badge-dot-xs bg-success">Paid</span>
+                                                        @elseif($order->payment_status === 'pending')
+                                                            <span class="badge badge-dot badge-dot-xs bg-warning">Pending</span>
+                                                        @elseif($order->payment_status === 'failed')
+                                                            <span class="badge badge-dot badge-dot-xs bg-danger">Failed</span>
+                                                        @else
+                                                            <span class="badge badge-dot badge-dot-xs bg-secondary">{{ ucfirst($order->payment_status) }}</span>
+                                                        @endif
                                                     </div>
                                                 </div>
+                                                @empty
                                                 <div class="nk-tb-item">
-                                                    <div class="nk-tb-col"><span class="tb-lead"><a href="#">#95850</a></span>
-                                                    </div>
-                                                    <div class="nk-tb-col tb-col-sm">
-                                                        <div class="user-card">
-                                                            <div class="user-avatar sm bg-azure-dim"><span>DE</span>
-                                                            </div>
-                                                            <div class="user-name"><span
-                                                                    class="tb-lead">Desiree Edwards</span></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="nk-tb-col tb-col-md"><span
-                                                            class="tb-sub">02/02/2020</span></div>
-                                                    <div class="nk-tb-col"><span class="tb-sub tb-amount">596.75 <span>USD</span></span>
-                                                    </div>
-                                                    <div class="nk-tb-col"><span
-                                                            class="badge badge-dot badge-dot-xs bg-danger">Canceled</span>
+                                                    <div class="nk-tb-col" colspan="5">
+                                                        <span class="tb-sub">No orders found</span>
                                                     </div>
                                                 </div>
-                                                <div class="nk-tb-item">
-                                                    <div class="nk-tb-col"><span class="tb-lead"><a href="#">#95812</a></span>
-                                                    </div>
-                                                    <div class="nk-tb-col tb-col-sm">
-                                                        <div class="user-card">
-                                                            <div class="user-avatar sm bg-warning-dim"><img
-                                                                    src="/demo2/images/avatar/b-sm.jpg" alt=""></div>
-                                                            <div class="user-name"><span
-                                                                    class="tb-lead">Blanca Schultz</span></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="nk-tb-col tb-col-md"><span
-                                                            class="tb-sub">02/01/2020</span></div>
-                                                    <div class="nk-tb-col"><span class="tb-sub tb-amount">199.99 <span>USD</span></span>
-                                                    </div>
-                                                    <div class="nk-tb-col"><span
-                                                            class="badge badge-dot badge-dot-xs bg-success">Paid</span>
-                                                    </div>
-                                                </div>
-                                                <div class="nk-tb-item">
-                                                    <div class="nk-tb-col"><span class="tb-lead"><a href="#">#95256</a></span>
-                                                    </div>
-                                                    <div class="nk-tb-col tb-col-sm">
-                                                        <div class="user-card">
-                                                            <div class="user-avatar sm bg-purple-dim"><span>NL</span>
-                                                            </div>
-                                                            <div class="user-name"><span
-                                                                    class="tb-lead">Naomi Lawrence</span></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="nk-tb-col tb-col-md"><span
-                                                            class="tb-sub">01/29/2020</span></div>
-                                                    <div class="nk-tb-col"><span class="tb-sub tb-amount">1099.99 <span>USD</span></span>
-                                                    </div>
-                                                    <div class="nk-tb-col"><span
-                                                            class="badge badge-dot badge-dot-xs bg-success">Paid</span>
-                                                    </div>
-                                                </div>
-                                                <div class="nk-tb-item">
-                                                    <div class="nk-tb-col"><span class="tb-lead"><a href="#">#95135</a></span>
-                                                    </div>
-                                                    <div class="nk-tb-col tb-col-sm">
-                                                        <div class="user-card">
-                                                            <div class="user-avatar sm bg-success-dim"><span>CH</span>
-                                                            </div>
-                                                            <div class="user-name"><span
-                                                                    class="tb-lead">Cassandra Hogan</span></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="nk-tb-col tb-col-md"><span
-                                                            class="tb-sub">01/29/2020</span></div>
-                                                    <div class="nk-tb-col"><span class="tb-sub tb-amount">1099.99 <span>USD</span></span>
-                                                    </div>
-                                                    <div class="nk-tb-col"><span
-                                                            class="badge badge-dot badge-dot-xs bg-warning">Due</span>
-                                                    </div>
-                                                </div>
+                                                @endforelse
                                             </div>
                                         </div>
                                     </div>
@@ -281,66 +222,31 @@
                                                     </div>
                                                 </div>
                                                 <ul class="nk-top-products">
+                                                    @forelse($topProducts as $topProduct)
                                                     <li class="item">
-                                                        <div class="thumb"><img src="/demo2/images/product/a.png"
-                                                                                alt=""></div>
+                                                        <div class="thumb">
+                                                            @if($topProduct->product && $topProduct->product->images->first())
+                                                                <img src="{{ $topProduct->product->images->first()->url }}" alt="{{ $topProduct->product->name }}">
+                                                            @else
+                                                                <img src="{{ asset('assets/images/product/placeholder.svg') }}" alt="No Image">
+                                                            @endif
+                                                        </div>
                                                         <div class="info">
-                                                            <div class="title">Pink Fitness Tracker</div>
-                                                            <div class="price">$99.00</div>
+                                                            <div class="title">{{ $topProduct->product->name ?? 'Product Not Found' }}</div>
+                                                            <div class="price">₦{{ number_format($topProduct->product->price ?? 0, 2) }}</div>
                                                         </div>
                                                         <div class="total">
-                                                            <div class="amount">$990.00</div>
-                                                            <div class="count">10 Sold</div>
+                                                            <div class="amount">₦{{ number_format($topProduct->total_revenue, 2) }}</div>
+                                                            <div class="count">{{ $topProduct->total_sold }} Sold</div>
                                                         </div>
                                                     </li>
+                                                    @empty
                                                     <li class="item">
-                                                        <div class="thumb"><img src="/demo2/images/product/b.png"
-                                                                                alt=""></div>
                                                         <div class="info">
-                                                            <div class="title">Purple Smartwatch</div>
-                                                            <div class="price">$99.00</div>
-                                                        </div>
-                                                        <div class="total">
-                                                            <div class="amount">$990.00</div>
-                                                            <div class="count">10 Sold</div>
+                                                            <div class="title">No products sold yet</div>
                                                         </div>
                                                     </li>
-                                                    <li class="item">
-                                                        <div class="thumb"><img src="/demo2/images/product/c.png"
-                                                                                alt=""></div>
-                                                        <div class="info">
-                                                            <div class="title">Black Mi Band Smartwatch</div>
-                                                            <div class="price">$99.00</div>
-                                                        </div>
-                                                        <div class="total">
-                                                            <div class="amount">$990.00</div>
-                                                            <div class="count">10 Sold</div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="item">
-                                                        <div class="thumb"><img src="/demo2/images/product/d.png"
-                                                                                alt=""></div>
-                                                        <div class="info">
-                                                            <div class="title">Black Headphones</div>
-                                                            <div class="price">$99.00</div>
-                                                        </div>
-                                                        <div class="total">
-                                                            <div class="amount">$990.00</div>
-                                                            <div class="count">10 Sold</div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="item">
-                                                        <div class="thumb"><img src="/demo2/images/product/e.png"
-                                                                                alt=""></div>
-                                                        <div class="info">
-                                                            <div class="title">iPhone 7 Headphones</div>
-                                                            <div class="price">$99.00</div>
-                                                        </div>
-                                                        <div class="total">
-                                                            <div class="amount">$990.00</div>
-                                                            <div class="count">10 Sold</div>
-                                                        </div>
-                                                    </li>
+                                                    @endforelse
                                                 </ul>
                                             </div>
                                         </div>
@@ -356,144 +262,32 @@
                                                     <li class="item">
                                                         <div class="info">
                                                             <div class="title">Orders</div>
-                                                            <div class="count">1,795</div>
+                                                            <div class="count">{{ number_format($totalOrders) }}</div>
                                                         </div>
                                                         <em class="icon bg-primary-dim ni ni-bag"></em></li>
                                                     <li class="item">
                                                         <div class="info">
                                                             <div class="title">Customers</div>
-                                                            <div class="count">2,327</div>
+                                                            <div class="count">{{ number_format($totalCustomers) }}</div>
                                                         </div>
                                                         <em class="icon bg-info-dim ni ni-users"></em></li>
                                                     <li class="item">
                                                         <div class="info">
                                                             <div class="title">Products</div>
-                                                            <div class="count">674</div>
+                                                            <div class="count">{{ number_format($totalProducts) }}</div>
                                                         </div>
                                                         <em class="icon bg-pink-dim ni ni-box"></em></li>
                                                     <li class="item">
                                                         <div class="info">
                                                             <div class="title">Categories</div>
-                                                            <div class="count">68</div>
+                                                            <div class="count">{{ number_format($totalCategories) }}</div>
                                                         </div>
                                                         <em class="icon bg-purple-dim ni ni-server"></em></li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xxl-5 col-lg-6">
-                                        <div class="card card-full overflow-hidden">
-                                            <div class="nk-ecwg nk-ecwg4 h-100">
-                                                <div class="card-inner flex-grow-1">
-                                                    <div class="card-title-group mb-4">
-                                                        <div class="card-title"><h6 class="title">Traffic Sources</h6>
-                                                        </div>
-                                                        <div class="card-tools">
-                                                            <div class="dropdown"><a href="#"
-                                                                                     class="dropdown-toggle link link-light link-sm dropdown-indicator"
-                                                                                     data-bs-toggle="dropdown">30
-                                                                    Days</a>
-                                                                <div
-                                                                    class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
-                                                                    <ul class="link-list-opt no-bdr">
-                                                                        <li><a href="#"><span>15 Days</span></a></li>
-                                                                        <li><a href="#"
-                                                                               class="active"><span>30 Days</span></a>
-                                                                        </li>
-                                                                        <li><a href="#"><span>3 Months</span></a></li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="data-group">
-                                                        <div class="nk-ecwg4-ck">
-                                                            <canvas class="ecommerce-doughnut-s1"
-                                                                    id="trafficSources"></canvas>
-                                                        </div>
-                                                        <ul class="nk-ecwg4-legends">
-                                                            <li>
-                                                                <div class="title"><span class="dot dot-lg sq"
-                                                                                         data-bg="#9cabff"></span><span>Organic Search</span>
-                                                                </div>
-                                                                <div class="amount amount-xs">4,305</div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="title"><span class="dot dot-lg sq"
-                                                                                         data-bg="#ffa9ce"></span><span>Referrals</span>
-                                                                </div>
-                                                                <div class="amount amount-xs">482</div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="title"><span class="dot dot-lg sq"
-                                                                                         data-bg="#b8acff"></span><span>Social Media</span>
-                                                                </div>
-                                                                <div class="amount amount-xs">859</div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="title"><span class="dot dot-lg sq"
-                                                                                         data-bg="#f9db7b"></span><span>Others</span>
-                                                                </div>
-                                                                <div class="amount amount-xs">138</div>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="card-inner card-inner-md bg-light">
-                                                    <div class="card-note"><em class="icon ni ni-info-fill"></em><span>Traffic channels have beed generating the most traffics over past days.</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xxl-4 col-lg-6">
-                                        <div class="card h-100">
-                                            <div class="nk-ecwg nk-ecwg5">
-                                                <div class="card-inner">
-                                                    <div class="card-title-group align-start pb-3 g-2">
-                                                        <div class="card-title"><h6 class="title">Store Visitors</h6>
-                                                        </div>
-                                                        <div class="card-tools"><em class="card-hint icon ni ni-help"
-                                                                                    data-bs-toggle="tooltip"
-                                                                                    data-bs-placement="left"
-                                                                                    title="Users of this month"></em>
-                                                        </div>
-                                                    </div>
-                                                    <div class="data-group">
-                                                        <div class="data">
-                                                            <div class="title">Monthly</div>
-                                                            <div class="amount amount-sm">9.28K</div>
-                                                            <div class="change up"><em
-                                                                    class="icon ni ni-arrow-long-up"></em>4.63%
-                                                            </div>
-                                                        </div>
-                                                        <div class="data">
-                                                            <div class="title">Weekly</div>
-                                                            <div class="amount amount-sm">2.69K</div>
-                                                            <div class="change down"><em
-                                                                    class="icon ni ni-arrow-long-down"></em>1.92%
-                                                            </div>
-                                                        </div>
-                                                        <div class="data">
-                                                            <div class="title">Daily (Avg)</div>
-                                                            <div class="amount amount-sm">0.94K</div>
-                                                            <div class="change up"><em
-                                                                    class="icon ni ni-arrow-long-up"></em>3.45%
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="nk-ecwg5-ck">
-                                                        <canvas class="ecommerce-line-chart-s4"
-                                                                id="storeVisitors"></canvas>
-                                                    </div>
-                                                    <div class="chart-label-group">
-                                                        <div class="chart-label">01 Jul, 2020</div>
-                                                        <div class="chart-label">30 Jul, 2020</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>

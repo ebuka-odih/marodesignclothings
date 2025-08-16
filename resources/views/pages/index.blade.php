@@ -17,7 +17,7 @@
 
 <div style="display: flex; flex-direction: column; min-height: calc(100vh - 140px); background: white;">
     <!-- Main Content Area - Image Slider -->
-    <div style="position: relative; background: #f8f9fa; overflow: hidden;">
+    <div style="position: relative; overflow: hidden;">
         <!-- Image Slider Container -->
         <div id="imageSlider" style="position: relative; width: 100%; height: auto;">
             <!-- Slider Images -->

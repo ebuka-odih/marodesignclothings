@@ -107,14 +107,14 @@
                 <span style="font-size: 16px; font-weight: 600; color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">Subtotal:</span>
                 <span style="font-size: 18px; font-weight: 700; color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">₦{{ number_format($subtotal, 2) }}</span>
             </div>
-            
+
             <a href="{{ route('checkout') }}" style="display: block; width: 100%; background: #65644A; color: white; text-align: center; padding: 16px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; transition: background-color 0.3s ease;">
-                Proceed to Checkout
-            </a>
-            
+                    Proceed to Checkout
+                </a>
+                
             <a href="{{ route('index') }}" style="display: block; width: 100%; background: white; color: #65644A; text-align: center; padding: 12px; border: 1px solid #65644A; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin-top: 12px; transition: all 0.3s ease;">
                 Continue Shopping
-            </a>
+                </a>
         </div>
     @endif
 </div>
