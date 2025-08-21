@@ -65,6 +65,17 @@ class PaymentController extends Controller
      */
     public function initialize(Request $request, Order $order)
     {
+        Log::info('Payment initialization request', [
+            'order_id' => $order->id,
+            'order_number' => $order->order_number,
+            'is_ajax' => $request->ajax(),
+            'method' => $request->method(),
+            'url' => $request->fullUrl(),
+            'headers' => $request->headers->all(),
+            'x_requested_with' => $request->header('X-Requested-With'),
+            'accept' => $request->header('Accept')
+        ]);
+
         // Check if order belongs to current user (if authenticated)
         // Allow access if user is not authenticated (guest checkout) or if order belongs to authenticated user
         if (auth()->check() && $order->user_id && (string)$order->user_id !== (string)auth()->id()) {
@@ -73,32 +84,66 @@ class PaymentController extends Controller
 
         // Check if order is already paid
         if ($order->payment_status === 'paid') {
-            return response()->json([
-                'success' => false,
-                'message' => 'Order has already been paid.'
-            ]);
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Order has already been paid.'
+                ]);
+            }
+            return back()->with('error', 'Order has already been paid.');
         }
 
         try {
+            Log::info('Calling PaystackService initializeTransaction', [
+                'order_id' => $order->id,
+                'order_total' => $order->total,
+                'order_currency' => $order->currency
+            ]);
+
             $result = $this->paystackService->initializeTransaction($order);
 
+            Log::info('PaystackService result', [
+                'order_id' => $order->id,
+                'result' => $result
+            ]);
+
             if ($result['success']) {
-                return response()->json([
-                    'success' => true,
-                    'authorization_url' => $result['authorization_url'],
-                    'reference' => $result['reference']
-                ]);
+                // Check if it's an AJAX request or if we should return JSON
+                $isAjax = $request->ajax() || 
+                          $request->header('X-Requested-With') === 'XMLHttpRequest' ||
+                          $request->header('Accept') === 'application/json';
+                
+                if ($isAjax) {
+                    return response()->json([
+                        'success' => true,
+                        'authorization_url' => $result['authorization_url'],
+                        'reference' => $result['reference']
+                    ]);
+                }
+                // For form submissions, redirect directly to Paystack
+                return redirect()->away($result['authorization_url']);
             } else {
-                return response()->json([
-                    'success' => false,
-                    'message' => $result['message']
-                ]);
+                // Check if it's an AJAX request or if we should return JSON
+                $isAjax = $request->ajax() || 
+                          $request->header('X-Requested-With') === 'XMLHttpRequest' ||
+                          $request->header('Accept') === 'application/json';
+                
+                if ($isAjax) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => $result['message']
+                    ]);
+                }
+                return back()->with('error', $result['message']);
             }
 
         } catch (\Exception $e) {
             Log::error('Payment initialization error', [
                 'order_id' => $order->id,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
             ]);
 
             // Show detailed error in development, generic message in production
@@ -106,10 +151,13 @@ class PaymentController extends Controller
                 ? 'Payment Error: ' . $e->getMessage() . ' (Line: ' . $e->getLine() . ' in ' . basename($e->getFile()) . ')'
                 : 'An error occurred while initializing payment.';
 
-            return response()->json([
-                'success' => false,
-                'message' => $errorMessage
-            ]);
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $errorMessage
+                ]);
+            }
+            return back()->with('error', $errorMessage);
         }
     }
 
@@ -119,6 +167,12 @@ class PaymentController extends Controller
     public function callback(Request $request)
     {
         $reference = $request->query('reference');
+        
+        Log::info('Payment callback received', [
+            'reference' => $reference,
+            'all_params' => $request->all(),
+            'url' => $request->fullUrl()
+        ]);
         
         if (!$reference) {
             return redirect()->route('order.failed')
@@ -131,8 +185,10 @@ class PaymentController extends Controller
             if ($result['success']) {
                 $transaction = $result['data'];
                 
-                // Find order by reference
-                $order = Order::where('transaction_id', $reference)->first();
+                // Find order by reference (try both transaction_id and order_number)
+                $order = Order::where('transaction_id', $reference)
+                    ->orWhere('order_number', $reference)
+                    ->first();
                 
                 if (!$order) {
                     Log::error('Order not found for payment callback', ['reference' => $reference]);

@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('order_number')->unique();
-            $table->uuid('user_id');
+            $table->uuid('user_id')->nullable();
             $table->decimal('subtotal', 10, 2);
             $table->decimal('tax', 10, 2)->default(0);
             $table->decimal('shipping_cost', 10, 2)->default(0);
             $table->decimal('discount', 10, 2)->default(0);
             $table->decimal('total', 10, 2);
-            $table->string('currency')->default('USD');
+            $table->string('currency')->default('NGN');
             
             // Shipping Information
             $table->string('shipping_name');
@@ -57,7 +57,7 @@ return new class extends Migration
             
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

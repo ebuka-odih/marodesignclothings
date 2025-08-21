@@ -52,7 +52,6 @@ Route::middleware(['splade'])->group(function () {
     // Payment routes
     Route::get('/payment/{order}', [PaymentController::class, 'show'])->name('payment.show');
     Route::post('/payment/{order}/initialize', [PaymentController::class, 'initialize'])->name('payment.initialize');
-    Route::get('/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
     Route::get('/payment/success/{order}', [PaymentController::class, 'success'])->name('order.success');
     Route::get('/payment/failed', [PaymentController::class, 'failed'])->name('order.failed');
 });
@@ -65,6 +64,9 @@ Route::get('/media/{filename}', function ($filename) {
     }
     abort(404);
 })->where('filename', '.*');
+
+// Payment callback (outside splade middleware)
+Route::get('/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
 
 // Payment webhook (outside splade middleware)
 Route::post('/payment/webhook', [PaymentController::class, 'webhook'])->name('payment.webhook');

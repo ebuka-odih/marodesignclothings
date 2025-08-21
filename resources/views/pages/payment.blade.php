@@ -146,13 +146,26 @@
 
             <!-- Payment Button -->
             <div class="space-y-4">
+                <!-- JavaScript Version -->
                 <button id="pay-button" 
+                        onclick="console.log('Inline click handler works!')"
                         class="w-full bg-[#65644A] hover:bg-[#65644A]/90 text-white font-bold py-4 px-6 rounded-lg transition-colors text-lg flex items-center justify-center space-x-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                     </svg>
                     <span>Pay ₦{{ number_format($order->total, 2) }}</span>
                 </button>
+                
+                <!-- Fallback Form Version (if JavaScript fails) -->
+                <form id="payment-form" action="{{ route('payment.initialize', $order) }}" method="POST" class="hidden">
+                    @csrf
+                    <button type="submit" class="w-full bg-[#65644A] hover:bg-[#65644A]/90 text-white font-bold py-4 px-6 rounded-lg transition-colors text-lg flex items-center justify-center space-x-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                        <span>Pay ₦{{ number_format($order->total, 2) }} (Form)</span>
+                    </button>
+                </form>
                 
                 <div id="loading" class="hidden text-center">
                     <div class="inline-flex items-center space-x-2 text-[#65644A]">
@@ -174,32 +187,78 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Payment page loaded');
+    
     const payButton = document.getElementById('pay-button');
     const loading = document.getElementById('loading');
     const error = document.getElementById('error');
     const errorMessage = document.getElementById('error-message');
 
-    payButton.addEventListener('click', function() {
+    console.log('Pay button found:', payButton);
+    console.log('Loading element found:', loading);
+    console.log('Error element found:', error);
+
+    if (!payButton) {
+        console.error('Pay button not found!');
+        // Show fallback form
+        document.getElementById('payment-form').classList.remove('hidden');
+        return;
+    }
+
+    // Test if button is clickable
+    console.log('Button disabled:', payButton.disabled);
+    console.log('Button style pointer-events:', getComputedStyle(payButton).pointerEvents);
+    console.log('Button style cursor:', getComputedStyle(payButton).cursor);
+
+    payButton.addEventListener('click', function(e) {
+        console.log('Pay button clicked!');
+        e.preventDefault();
+        
         // Show loading state
         payButton.classList.add('hidden');
         loading.classList.remove('hidden');
         error.classList.add('hidden');
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+        console.log('CSRF Token:', csrfToken);
 
         // Initialize payment
         fetch('{{ route("payment.initialize", $order) }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                'X-CSRF-TOKEN': csrfToken || '{{ csrf_token() }}',
+                'Accept': 'application/json'
             }
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log('Response status:', response.status);
+            console.log('Response headers:', response.headers);
+            
+            // Check if response is JSON
+            const contentType = response.headers.get('content-type');
+            console.log('Content-Type:', contentType);
+            
+            if (contentType && contentType.includes('application/json')) {
+                return response.json();
+            } else {
+                // If not JSON, get the text and log it
+                return response.text().then(text => {
+                    console.error('Non-JSON response received:', text);
+                    throw new Error('Server returned non-JSON response: ' + text.substring(0, 200));
+                });
+            }
+        })
         .then(data => {
+            console.log('Payment response:', data);
             if (data.success) {
                 // Redirect to Paystack payment page
+                console.log('Redirecting to:', data.authorization_url);
+                // Use window.location.href for redirects, not fetch
                 window.location.href = data.authorization_url;
             } else {
                 // Show error
+                console.error('Payment failed:', data.message);
                 errorMessage.textContent = data.message || 'Payment initialization failed. Please try again.';
                 error.classList.remove('hidden');
                 payButton.classList.remove('hidden');
@@ -212,8 +271,13 @@ document.addEventListener('DOMContentLoaded', function() {
             error.classList.remove('hidden');
             payButton.classList.remove('hidden');
             loading.classList.add('hidden');
+            
+            // Show fallback form if JavaScript fails
+            document.getElementById('payment-form').classList.remove('hidden');
         });
     });
+
+    console.log('Event listener added to pay button');
 });
 </script>
 @endsection 

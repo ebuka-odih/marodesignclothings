@@ -55,20 +55,22 @@
                     <div class="product-card" style="background: white; border: 1px solid #f0f0f0; transition: all 0.3s ease; cursor: pointer; overflow: hidden;">
                         <!-- Product Image -->
                         <div class="product-image" style="position: relative; width: 100%; height: 350px; overflow: hidden;">
-                            @if($product->featuredImageUrl)
-                                <img src="{{ $product->featuredImageUrl }}" 
-                                     alt="{{ $product->name }}" 
-                                     style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
-                            @else
-                                <div style="width: 100%; height: 100%; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
-                                    <span style="color: #999; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px;">
-                                        No Image
-                                    </span>
-                                </div>
-                            @endif
+                            <a href="{{ route('product.show', $product->slug) }}" style="display: block; width: 100%; height: 100%; text-decoration: none;">
+                                @if($product->featuredImageUrl)
+                                    <img src="{{ $product->featuredImageUrl }}" 
+                                         alt="{{ $product->name }}" 
+                                         style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
+                                @else
+                                    <div style="width: 100%; height: 100%; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                        <span style="color: #999; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px;">
+                                            No Image
+                                        </span>
+                                    </div>
+                                @endif
+                            </a>
                             
                             <!-- Wishlist Icon -->
-                            <div class="wishlist-icon" style="position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease;">
+                            <div class="wishlist-icon" style="position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; z-index: 10;">
                                 <svg style="width: 16px; height: 16px; fill: none; stroke: black; stroke-width: 2;" viewBox="0 0 24 24">
                                     <path d="M20.84 4.61A5.5 5.5 0 0 0 12 5.67L10.94 4.61A5.5 5.5 0 0 0 3.16 12.39L12 21.23L20.84 12.39A5.5 5.5 0 0 0 20.84 4.61Z"/>
                                 </svg>

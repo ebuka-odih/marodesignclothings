@@ -26,6 +26,14 @@ class PaystackService
     public function initializeTransaction(Order $order, $callbackUrl = null)
     {
         try {
+            Log::info('PaystackService: Starting transaction initialization', [
+                'order_id' => $order->id,
+                'order_number' => $order->order_number,
+                'total' => $order->total,
+                'currency' => $order->currency,
+                'email' => $order->shipping_email
+            ]);
+
             $amount = $order->total * 100; // Convert to kobo (smallest currency unit)
             
             $data = [
@@ -53,17 +61,46 @@ class PaystackService
                 ]
             ];
 
+            Log::info('PaystackService: Request data prepared', [
+                'data' => $data,
+                'secret_key_length' => strlen($this->secretKey),
+                'public_key_length' => strlen($this->publicKey)
+            ]);
+
+            Log::info('PaystackService: Making HTTP request to Paystack', [
+                'url' => $this->baseUrl . '/transaction/initialize',
+                'headers' => [
+                    'Authorization' => 'Bearer ' . substr($this->secretKey, 0, 10) . '...',
+                    'Content-Type' => 'application/json'
+                ]
+            ]);
+
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $this->secretKey,
                 'Content-Type' => 'application/json',
             ])->post($this->baseUrl . '/transaction/initialize', $data);
 
+            Log::info('PaystackService: HTTP response received', [
+                'status_code' => $response->status(),
+                'response_body' => $response->body(),
+                'is_successful' => $response->successful()
+            ]);
+
             if ($response->successful()) {
                 $result = $response->json();
+                
+                Log::info('PaystackService: Response parsed', [
+                    'result' => $result
+                ]);
                 
                 if ($result['status']) {
                     // Update order with payment reference
                     $order->update([
+                        'transaction_id' => $result['data']['reference']
+                    ]);
+                    
+                    Log::info('PaystackService: Order updated with transaction_id', [
+                        'order_id' => $order->id,
                         'transaction_id' => $result['data']['reference']
                     ]);
                     
@@ -78,12 +115,14 @@ class PaystackService
 
             Log::error('Paystack initialization failed', [
                 'order_id' => $order->id,
-                'response' => $response->json()
+                'status_code' => $response->status(),
+                'response_body' => $response->body(),
+                'response_json' => $response->json()
             ]);
 
             return [
                 'success' => false,
-                'message' => 'Failed to initialize payment'
+                'message' => 'Failed to initialize payment: ' . $response->status() . ' - ' . $response->body()
             ];
 
         } catch (\Exception $e) {
