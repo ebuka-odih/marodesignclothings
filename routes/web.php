@@ -71,5 +71,13 @@ Route::get('/payment/callback', [PaymentController::class, 'callback'])->name('p
 // Payment webhook (outside splade middleware)
 Route::post('/payment/webhook', [PaymentController::class, 'webhook'])->name('payment.webhook');
 
+// Debug route for checking image URLs
+Route::get('/debug/images', function () {
+    $products = \App\Models\Product::with('images')->get();
+    $images = \App\Models\Image::all();
+    
+    return view('debug.images', compact('products', 'images'));
+})->name('debug.images');
+
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';

@@ -150,41 +150,7 @@
         </div>
     </div>
     
-    <!-- Product Grid Section -->
-    <div style="background: white; padding: 40px 20px;">
-        <div style="max-width: 1200px; margin: 0 auto;">
-            <h2 style="color: black; font-family: 'Times New Roman', serif; font-size: 32px; font-weight: 400; text-align: center; margin-bottom: 40px; letter-spacing: 0.05em;">
-                Featured Collection
-            </h2>
-            
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px;">
-                @foreach($products as $product)
-                    <div style="display: flex; flex-direction: column; align-items: center; background: white; border: 1px solid #f0f0f0; padding: 20px; transition: transform 0.3s ease;">
-                        <a href="{{ route('product.show', $product) }}" style="display: flex; align-items: center; justify-content: center; width: 100%; height: 400px; margin-bottom: 16px; overflow: hidden;">
-                            @php
-                                $firstImage = $product->images()->first();
-                            @endphp
-                            <img src="{{ $firstImage ? $firstImage->url : asset('assets/images/product/placeholder.svg') }}" 
-                                 alt="{{ $product->name }}" 
-                                 style="object-fit: cover; width: 100%; height: 100%; transition: transform 0.3s ease;">
-                        </a>
-                        <div style="text-align: center; width: 100%;">
-                            <a href="{{ route('product.show', $product) }}" 
-                               style="text-decoration: none; color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 16px; font-weight: 500; margin-bottom: 8px; display: block; letter-spacing: 0.05em;">
-                                {{ $product->name }}
-                            </a>
-                            <p style="color: #666; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; margin-bottom: 8px;">
-                                £{{ number_format($product->price, 2) }} GBP
-                            </p>
-                            <p style="color: #999; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em;">
-                                {{ $product->category->name ?? '' }}
-                            </p>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </div>
+
 </div>
 
 <script>

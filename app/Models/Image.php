@@ -42,6 +42,25 @@ class Image extends Model
 
     public function getUrlAttribute()
     {
+        // Ensure we have a valid path
+        if (empty($this->path)) {
+            return null;
+        }
+        
+        // For public disk, generate the correct URL
+        if ($this->disk === 'public') {
+            // Try multiple approaches to ensure compatibility
+            $url = asset('storage/' . $this->path);
+            
+            // If asset() doesn't work, try direct URL construction
+            if (!$url || $url === 'storage/' . $this->path) {
+                $url = config('app.url') . '/storage/' . $this->path;
+            }
+            
+            return $url;
+        }
+        
+        // Fallback to Storage facade
         return Storage::disk($this->disk)->url($this->path);
     }
 
@@ -56,6 +75,9 @@ class Image extends Model
         $thumbnailPath = $pathInfo['dirname'] . '/thumbnails/' . $pathInfo['basename'];
         
         if (Storage::disk($this->disk)->exists($thumbnailPath)) {
+            if ($this->disk === 'public') {
+                return asset('storage/' . $thumbnailPath);
+            }
             return Storage::disk($this->disk)->url($thumbnailPath);
         }
         
@@ -68,6 +90,9 @@ class Image extends Model
         $mediumPath = $pathInfo['dirname'] . '/medium/' . $pathInfo['basename'];
         
         if (Storage::disk($this->disk)->exists($mediumPath)) {
+            if ($this->disk === 'public') {
+                return asset('storage/' . $mediumPath);
+            }
             return Storage::disk($this->disk)->url($mediumPath);
         }
         
