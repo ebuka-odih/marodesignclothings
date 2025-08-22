@@ -120,4 +120,17 @@ class Product extends Model
     {
         $this->increment('views');
     }
+    
+    public function deleteAllImages()
+    {
+        // Load images if not already loaded
+        if (!$this->relationLoaded('images')) {
+            $this->load('images');
+        }
+        
+        // Delete all images
+        $this->images->each(function ($image) {
+            $image->delete();
+        });
+    }
 }

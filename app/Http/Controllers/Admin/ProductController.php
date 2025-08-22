@@ -122,8 +122,17 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
-        // Delete associated images
-        $this->imageService->deleteImagesByImageable($product);
+        try {
+            // Load the images relationship to ensure it's available
+            $product->load('images');
+            
+            // Delete associated images using the service
+            $this->imageService->deleteImagesByImageable($product);
+        } catch (\Exception $e) {
+            // Fallback: use the product's own method
+            \Log::warning('ImageService failed, using fallback method: ' . $e->getMessage());
+            $product->deleteAllImages();
+        }
 
         $product->delete();
 

@@ -86,10 +86,40 @@ class ImageService
 
     public function deleteImagesByImageable($imageable)
     {
-        $images = $imageable->images;
+        // Ensure we have a valid imageable object
+        if (!$imageable) {
+            return;
+        }
         
-        foreach ($images as $image) {
-            $this->deleteImage($image);
+        // Use a more robust approach to get images
+        try {
+            // Try to get images using the relationship
+            $images = $imageable->images;
+            
+            // If images is a collection, iterate through it
+            if ($images && method_exists($images, 'each')) {
+                $images->each(function ($image) {
+                    $this->deleteImage($image);
+                });
+            } else {
+                // Fallback: directly query the images table
+                $imageableType = get_class($imageable);
+                $imageableId = $imageable->id;
+                
+                $images = \App\Models\Image::where('imageable_type', $imageableType)
+                    ->where('imageable_id', $imageableId)
+                    ->get();
+                
+                foreach ($images as $image) {
+                    $this->deleteImage($image);
+                }
+            }
+        } catch (\Exception $e) {
+            // Log the error but don't throw it
+            \Log::error('Error deleting images for imageable: ' . $e->getMessage(), [
+                'imageable_type' => get_class($imageable),
+                'imageable_id' => $imageable->id ?? 'unknown'
+            ]);
         }
     }
 
