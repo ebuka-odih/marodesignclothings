@@ -166,23 +166,108 @@
                 const muteIcon = document.getElementById('muteIcon');
                 
                 // Set video to muted by default
-                video.muted = true;
+                if (video) {
+                    video.muted = true;
+                    
+                    // Mute/Unmute functionality
+                    muteBtn.addEventListener('click', function() {
+                        if (video.muted) {
+                            video.muted = false;
+                            muteIcon.className = 'fa fa-volume-up';
+                        } else {
+                            video.muted = true;
+                            muteIcon.className = 'fa fa-volume-off';
+                        }
+                    });
+                    
+                    // Update icon when video loads
+                    video.addEventListener('loadeddata', function() {
+                        muteIcon.className = video.muted ? 'fa fa-volume-off' : 'fa fa-volume-up';
+                    });
+                }
                 
-                // Mute/Unmute functionality
-                muteBtn.addEventListener('click', function() {
-                    if (video.muted) {
-                        video.muted = false;
-                        muteIcon.className = 'fa fa-volume-up';
-                    } else {
-                        video.muted = true;
-                        muteIcon.className = 'fa fa-volume-off';
-                    }
+                // Add to cart functionality
+                const addToCartForms = document.querySelectorAll('.add-to-cart-form');
+                addToCartForms.forEach(form => {
+                    form.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        
+                        const formData = new FormData(form);
+                        const submitBtn = form.querySelector('button[type="submit"]');
+                        const originalText = submitBtn.textContent;
+                        
+                        // Show loading state
+                        submitBtn.textContent = 'Adding...';
+                        submitBtn.disabled = true;
+                        
+                        fetch(form.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Show success notification
+                                showNotification(data.message, 'success');
+                                
+                                // Update cart count in header if it exists
+                                const cartCountElement = document.querySelector('.cart-count');
+                                if (cartCountElement && data.cart_count !== undefined) {
+                                    cartCountElement.textContent = data.cart_count;
+                                }
+                                
+                                // Refresh the page to update cart sidebar
+                                setTimeout(() => {
+                                    window.location.reload();
+                                }, 1000);
+                            } else {
+                                showNotification(data.message || 'Error adding product to cart', 'error');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            showNotification('Error adding product to cart', 'error');
+                        })
+                        .finally(() => {
+                            // Reset button state
+                            submitBtn.textContent = originalText;
+                            submitBtn.disabled = false;
+                        });
+                    });
                 });
                 
-                // Update icon when video loads
-                video.addEventListener('loadeddata', function() {
-                    muteIcon.className = video.muted ? 'fa fa-volume-off' : 'fa fa-volume-up';
-                });
+                // Notification function
+                function showNotification(message, type) {
+                    // Create notification element
+                    const notification = document.createElement('div');
+                    notification.className = `notification ${type}`;
+                    notification.style.cssText = `
+                        position: fixed;
+                        top: 20px;
+                        right: 20px;
+                        padding: 15px 20px;
+                        border-radius: 5px;
+                        color: white;
+                        font-weight: 500;
+                        z-index: 10000;
+                        max-width: 300px;
+                        word-wrap: break-word;
+                        ${type === 'success' ? 'background-color: #28a745;' : 'background-color: #dc3545;'}
+                    `;
+                    notification.textContent = message;
+                    
+                    // Add to page
+                    document.body.appendChild(notification);
+                    
+                    // Remove after 3 seconds
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 3000);
+                }
             });
         </script>
         </style>
@@ -332,23 +417,9 @@
             <div class="cart-product-info-v2">
                 <div class="cart-product-content">
                     <div class="cart-product-info wow slideInRight">
-                        <h2>Studiofit Light Grey Hooded Jacket</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In luctus leo sit amet lorem egestas iaculis. Donec nibh enim, pharetra vel turpis non, vulputate luctus ex. Phasellus pharetra ut dolor ac rutrum.</p>
-                        <div class="price">
-                            <span>$25.45</span>
-                            <del>$35.00</del>
-                        </div>
+                        <h2>Classic Denim Set</h2>
                         <div class="cart-items-add">
-                            <div class="quantity">
-                                <button class="plus-btn" type="button" name="button">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                                <input type="text" name="name" value="1">
-                                <button class="minus-btn" type="button" name="button">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                            <a href="{{ route('shop') }}" title="" class="theme-btn">buy now</a>
+                            <a href="{{ route('shop') }}" title="" class="theme-btn">Shop Now</a>
                         </div>
                     </div>
                 </div>
@@ -372,25 +443,29 @@
             <p>Discover our latest premium designs crafted with exceptional quality and contemporary style</p>
         </div>
         <div class="product-categories v2 without-slide row">
+            @forelse($this->featuredProducts as $product)
             <div class="col-lg-4">
                 <div class="product-cat">
                     <div class="product-img">
-                        <img src="{{ asset('media/8.jpeg') }}" alt="MDC Designer Collection">
-                        <span class="pro-category">NEW</span>
+                        @if($product->images && $product->images->count() > 0 && $product->images->first())
+                            <img src="{{ asset('storage/' . $product->images->first()->path) }}" alt="{{ $product->name }}">
+                        @else
+                            <img src="{{ asset('images/placeholder.jpg') }}" alt="{{ $product->name }}">
+                        @endif
                     </div>
                     <div class="product-hover-info">
                         <div class="product-hover-head">
                             <ul class="pt-links">
-                                <li>NEW</li>
-                                <li>PREMIUM</li>
+                                <li>{{ $product->category ? strtoupper($product->category->name) : 'PREMIUM' }}</li>
+                                <li>FEATURED</li>
                             </ul>
                             <a href="#" title="" class="fvrt-product"><img src="{{ asset('images/icons/heart.svg') }}" alt="" /></a>
                         </div>
                         <div class="product-info-hover">
-                            <h3><a href="{{ route('shop') }}" title="">MDC Designer Hoodie</a></h3>
+                            <h3><a href="{{ route('shop') }}" title="">{{ $product->name }}</a></h3>
                             <span>Maro Design Clothing</span>
                             <div class="pricee">
-                                <span>$89.99</span>
+                                <span>₦{{ number_format($product->final_price, 0) }}</span>
                             </div>
                             <ul class="pro-colors">
                                 <li class="clr1"></li>
@@ -405,105 +480,29 @@
                                 <li>XL</li>
                             </ul>
                             <ul class="pro-buttons">
-                                <li><a href="{{ route('shop') }}" title="" class="theme-btn">SHOP NOW</a></li>
+                                <li>
+                                    <form action="{{ route('cart.add') }}" method="POST" class="add-to-cart-form" style="display: inline;">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="theme-btn" style="background: none; border: none; color: inherit; cursor: pointer; padding: 0; font: inherit;">ADD TO CART</button>
+                                    </form>
+                                </li>
                                 <li><a href="#" title="" class="theme-btn quick-view-btn">QUICK VIEW</a></li>
                             </ul>
                         </div>
                     </div><!--product-hover-info-->
                     <div class="product-info">
-                        <h3><a href="{{ route('shop') }}" title="">MDC Designer Hoodie</a></h3>
-                        <span class="product-price">$89.99</span>
+                        <h3><a href="{{ route('shop') }}" title="">{{ $product->name }}</a></h3>
+                        <span class="product-price">₦{{ number_format($product->final_price, 0) }}</span>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="product-cat">
-                    <div class="product-img">
-                        <img src="{{ asset('media/9.jpeg') }}" alt="MDC Designer Collection">
-                        <span class="pro-category">PREMIUM</span>
-                    </div>
-                    <div class="product-hover-info">
-                        <div class="product-hover-head">
-                            <ul class="pt-links">
-                                <li>PREMIUM</li>
-                                <li>LIMITED</li>
-                            </ul>
-                            <a href="#" title="" class="fvrt-product"><img src="{{ asset('images/icons/heart.svg') }}" alt="" /></a>
-                        </div>
-                        <div class="product-info-hover">
-                            <h3><a href="{{ route('shop') }}" title="">MDC Designer Tee</a></h3>
-                            <span>Maro Design Clothing</span>
-                            <div class="pricee">
-                                <span>$69.99</span>
-                            </div>
-                            <ul class="pro-colors">
-                                <li class="clr1"></li>
-                                <li class="clr2"></li>
-                                <li class="clr3"></li>
-                                <li class="clr4"></li>
-                            </ul>
-                            <ul class="variations">
-                                <li>S</li>
-                                <li>M</li>
-                                <li>L</li>
-                                <li>XL</li>
-                            </ul>
-                            <ul class="pro-buttons">
-                                <li><a href="{{ route('shop') }}" title="" class="theme-btn">SHOP NOW</a></li>
-                                <li><a href="#" title="" class="theme-btn quick-view-btn">QUICK VIEW</a></li>
-                            </ul>
-                        </div>
-                    </div><!--product-hover-info-->
-                    <div class="product-info">
-                        <h3><a href="{{ route('shop') }}" title="">MDC Designer Tee</a></h3>
-                        <span class="product-price">$69.99</span>
-                    </div>
-                </div>
+            @empty
+            <div class="col-12 text-center">
+                <p>No featured products available at the moment.</p>
             </div>
-            <div class="col-lg-4">
-                <div class="product-cat">
-                    <div class="product-img">
-                        <img src="{{ asset('media/10.jpeg') }}" alt="MDC Designer Collection">
-                        <span class="pro-category">EXCLUSIVE</span>
-                    </div>
-                    <div class="product-hover-info">
-                        <div class="product-hover-head">
-                            <ul class="pt-links">
-                                <li>EXCLUSIVE</li>
-                                <li>LUXURY</li>
-                            </ul>
-                            <a href="#" title="" class="fvrt-product"><img src="{{ asset('images/icons/heart.svg') }}" alt="" /></a>
-                        </div>
-                        <div class="product-info-hover">
-                            <h3><a href="{{ route('shop') }}" title="">MDC Designer Jacket</a></h3>
-                            <span>Maro Design Clothing</span>
-                            <div class="pricee">
-                                <span>$129.99</span>
-                            </div>
-                            <ul class="pro-colors">
-                                <li class="clr1"></li>
-                                <li class="clr2"></li>
-                                <li class="clr3"></li>
-                                <li class="clr4"></li>
-                            </ul>
-                            <ul class="variations">
-                                <li>S</li>
-                                <li>M</li>
-                                <li>L</li>
-                                <li>XL</li>
-                            </ul>
-                            <ul class="pro-buttons">
-                                <li><a href="{{ route('shop') }}" title="" class="theme-btn">SHOP NOW</a></li>
-                                <li><a href="#" title="" class="theme-btn quick-view-btn">QUICK VIEW</a></li>
-                            </ul>
-                        </div>
-                    </div><!--product-hover-info-->
-                    <div class="product-info">
-                        <h3><a href="{{ route('shop') }}" title="">MDC Designer Jacket</a></h3>
-                        <span class="product-price">$129.99</span>
-                    </div>
-                </div>
-            </div>
+            @endforelse
         </div>
     </div>
 </section><!--collection-section-->

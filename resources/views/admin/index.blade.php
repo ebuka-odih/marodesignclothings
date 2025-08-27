@@ -225,7 +225,7 @@
                                                     @forelse($topProducts as $topProduct)
                                                     <li class="item">
                                                         <div class="thumb">
-                                                            @if($topProduct->product && $topProduct->product->images->first())
+                                                            @if($topProduct->product && $topProduct->product->images && $topProduct->product->images->count() > 0 && $topProduct->product->images->first())
                                                                 <img src="{{ $topProduct->product->images->first()->url }}" alt="{{ $topProduct->product->name }}">
                                                             @else
                                                                 <img src="{{ asset('assets/images/product/placeholder.svg') }}" alt="No Image">
