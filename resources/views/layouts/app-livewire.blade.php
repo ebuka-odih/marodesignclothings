@@ -234,14 +234,6 @@
                                 <li><a href="#" title="">Instagram</a></li>
                             </ul>
                         </div><!--widget-links-->
-                        <div class="widget widget-newsletter wow fadeInLeft" data-wow-delay="600ms">
-                            <h3 class="widget-title">NEWSLETTER</h3>
-                            <p>Join the MDC Designer community for exclusive updates and early access to new collections.</p>
-                            <form>
-                                <input type="email" name="email" placeholder="Enter your email" />
-                                <button type="submit" class="theme-btn">SUBSCRIBE</button>
-                            </form>
-                        </div><!--widget-newsletter -->
                     </div>
                 </div>
             </div>
