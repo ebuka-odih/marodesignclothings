@@ -509,12 +509,5 @@
 
 
 
-<!-- Final Brand Statement -->
-<section class="marquee-section v2 web-slides">
-    <div class='marquee6' data-duration='17000' data-gap='10' data-duplicated='true' >
-        <h2>MDC DESIGNER - WHERE LUXURY MEETS INNOVATION</h2>
-    </div>
-</section>
-
 
 </div>
