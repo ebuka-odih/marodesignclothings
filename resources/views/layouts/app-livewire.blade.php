@@ -141,7 +141,6 @@
                         <li>
                             <div class="empty-cart-message">
                                 <p>Your cart is empty</p>
-                                <a href="{{ route('shop') }}" class="theme-btn">Shop Now</a>
                             </div>
                         </li>
                     @endif
