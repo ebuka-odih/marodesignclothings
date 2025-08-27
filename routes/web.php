@@ -16,9 +16,10 @@ use App\Http\Controllers\PaymentController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', \App\Livewire\HomePage::class)->name('index');
 
 Route::middleware(['splade'])->group(function () {
-    Route::get('/', [HomeController::class, 'index'])->name('index');
+    // Route::get('/', [HomeController::class, 'index'])->name('index');
     Route::get('/shop', [HomeController::class, 'shop'])->name('shop');
     Route::get('/product/{product:slug}', [HomeController::class, 'show'])->name('product.show');
     Route::get('/docs', fn () => view('docs'))->name('docs');

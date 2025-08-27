@@ -1,4 +1,4 @@
-@extends('pages.layout.app')
+@extends('pages.layout.app2')
 
 @section('title', 'Welcome')
 
@@ -15,266 +15,1309 @@
     ];
 @endphp
 
-<div style="display: flex; flex-direction: column; min-height: calc(100vh - 140px); background: white;">
-    <!-- Main Content Area - Image Slider -->
-    <div style="position: relative; overflow: hidden;">
-        <!-- Image Slider Container -->
-        <div id="imageSlider" style="position: relative; width: 100%; height: auto;">
-            <!-- Slider Images -->
-            <div id="sliderContainer" style="display: flex; transition: transform 0.8s ease-in-out;">
-                @foreach($sliderImages as $index => $image)
-                    <div style="flex-shrink: 0; width: 100%;">
-                        <img src="{{ url('/media/' . $image) }}" 
-                             alt="Fashion Collection {{ $index + 1 }}" 
-                             style="width: 100%; height: auto; display: block;">
+<!-- Quick View Popup Modal -->
+<div class="shop-single-section popup-quick-view">
+        <div class="shop-product-single">
+            <a href="#" title="" class="close-popup">
+                <img src="images/close2.png" alt="" />
+            </a>
+            <div class="shop-product-main-image">
+                <span class="pr-bar">new</span>
+                <div class="cart-product-large-slider">
+                    <div class="cart-product-large-image">
+                        <img src="images/resource/jacket1.png" alt="" />
                     </div>
-                @endforeach
-            </div>
-            
-            <!-- Navigation Arrows -->
-            <button id="prevBtn" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.5); color: white; border: none; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; z-index: 10;">
-                <svg style="width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2;" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
-                </svg>
-            </button>
-            
-            <button id="nextBtn" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.5); color: white; border: none; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; z-index: 10;">
-                <svg style="width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2;" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
-                </svg>
-            </button>
-            
-            <!-- Dots Indicator -->
-            <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10;">
-                @for($i = 0; $i < count($sliderImages); $i++)
-                    <button class="dot-indicator" style="width: 12px; height: 12px; border-radius: 50%; background: rgba(255, 255, 255, {{ $i === 0 ? '1' : '0.5' }}); border: none; cursor: pointer; transition: all 0.3s ease;" data-slide="{{ $i }}"></button>
-                @endfor
-            </div>
-        </div>
-    </div>
-    
-    <!-- Text Section (From Screenshot) -->
-    <div style="background: white; padding: 80px 20px; text-align: center;">
-        <div style="max-width: 800px; margin: 0 auto;">
-            <h3 style="color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 24px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 16px;">
-                THE MARO DESIGN PORTRAIT SERIES
-            </h3>
-            <h4 style="color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 20px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 32px;">
-                FALL WINTER 2025
-            </h4>
-            <p style="color: #666; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 16px; line-height: 1.6; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto;">
-                The House's latest collection comes to life through individual expression in a new campaign.
-            </p>
-        </div>
-    </div>
-    
-    <!-- Video Section -->
-    <div style="position: relative; width: 100%; height: 80vh; overflow: hidden;">
-        <video 
-            autoplay 
-            loop 
-            muted 
-            playsinline
-            style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1;">
-            <source src="{{ url('/media/v1.mp4') }}" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        
-        <!-- Optional overlay text on video -->
-        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; text-align: center; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
-            <h2 style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 48px; font-weight: 300; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px;">
-                IDENTITIES
-            </h2>
-            <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 24px; font-weight: 300; letter-spacing: 0.05em; line-height: 1.4;">
-                NOT CONSTRUCTED<br>
-                BUT REVEALED<br>
-                THROUGH EASE AND<br>
-                ATTITUDE
-            </p>
-        </div>
-    </div>
-    
-    <!-- Text Section Under Video -->
-    <div style="background: white; padding: 40px 20px; text-align: center;">
-        <div style="max-width: 800px; margin: 0 auto;">
-            <h2 style="color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 36px; font-weight: 300; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 24px;">
-                IDENTITIES
-            </h2>
-            <p style="color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 20px; font-weight: 300; letter-spacing: 0.05em; line-height: 1.6; text-transform: uppercase;">
-                NOT CONSTRUCTED<br>
-                BUT REVEALED<br>
-                THROUGH EASE AND<br>
-                ATTITUDE
-            </p>
-        </div>
-    </div>
-    
-    <!-- Image Collage Section -->
-    <div style="background: #f8f9fa; padding: 60px 20px; min-height: 600px;">
-        <div style="max-width: 1200px; margin: 0 auto;">
-            <!-- Debug Text -->
-            <div style="color: #6c757d; text-align: center; margin-bottom: 20px; font-size: 18px;">
-                IMAGE COLLAGE SECTION - SHOULD BE VISIBLE
-            </div>
-            
-            <!-- Two Images Side by Side -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px;">
-                <!-- Left Image -->
-                <div style="height: 500px; overflow: hidden; border: 2px solid #e9ecef;">
-                    <img src="{{ url('/media/7.jpeg') }}" 
-                         alt="Fashion Model 1" 
-                         style="width: 100%; height: 100%; object-fit: cover;"
-                         onerror="console.log('Image 7.jpeg failed to load')"
-                         onload="console.log('Image 7.jpeg loaded successfully')">
-                </div>
-                
-                <!-- Right Image -->
-                <div style="height: 500px; overflow: hidden; border: 2px solid #e9ecef;">
-                    <img src="{{ url('/media/8.jpeg') }}" 
-                         alt="Fashion Model 2" 
-                         style="width: 100%; height: 100%; object-fit: cover;"
-                         onerror="console.log('Image 8.jpeg failed to load')"
-                         onload="console.log('Image 8.jpeg loaded successfully')">
+                    <div class="cart-product-large-image">
+                        <img src="images/resource/jacket2.png" alt="" />
+                    </div>
+                    <div class="cart-product-large-image">
+                        <img src="images/resource/jacket3.png" alt="" />
+                    </div>
                 </div>
             </div>
-            
-            <!-- Text Under Images -->
-            <div style="text-align: center;">
-                <h3 style="color: #343a40; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 28px; font-weight: 300; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px;">
-                    THE CAMPAIGN
-                </h3>
-                <p style="color: #6c757d; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 16px; font-weight: 300; letter-spacing: 0.05em; line-height: 1.6; max-width: 600px; margin: 0 auto;">
-                    Capturing the essence of contemporary style through authentic moments and genuine expressions. Each image tells a story of individuality and confidence.
-                </p>
+            <div class="shop-product-single-info">
+                <h3><a href="shop-single.html" title="">Studiofit Light Grey Hooded Jacket</a></h3>
+                <div class="prod-ratings">
+                    <ul class="ratings">
+                        <li><i class="fa fa-star"></i></li>
+                        <li><i class="fa fa-star"></i></li>
+                        <li><i class="fa fa-star"></i></li>
+                        <li><i class="fa fa-star"></i></li>
+                        <li><i class="fa fa-star"></i></li>
+                    </ul>
+                    <span>4.5</span>
+                </div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In luctus leo sit amet lorem egestas iaculis. Donec nibh enim, pharetra vel turpis non, vulputate luctus ex. </p>
+                <div class="price">
+                    <span>$25.45</span>
+                    <del>$35.00</del>
+                </div>
+                <div class="size-colors">
+                    <div class="product-size">
+                        <span>Size</span>
+                        <a href="#" title="">size guide</a>
+                        <ul class="size-list">
+                            <li class="active">l</li>
+                            <li>m</li>
+                            <li>s</li>
+                            <li>xl</li>
+                            <li>xll</li>
+                        </ul>
+                    </div>
+                    <div class="product-colors">
+                        <span>color</span>
+                        <ul class="colors-list">
+                            <li class="active">
+                                <span class="clr1"></span>
+                            </li>
+                            <li>
+                                <span class="clr2"></span>
+                            </li>
+                            <li>
+                                <span class="clr3"></span>
+                            </li>
+                            <li>
+                                <span class="clr4"></span>
+                            </li>
+                            <li>
+                                <span class="clr5"></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="cart-items-add">
+                    <div class="quantity">
+                        <button class="plus-btn" type="button" name="button">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <input type="text" name="name" value="1" aria-autocomplete="list">
+                        <button class="minus-btn" type="button" name="button">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <a href="shop-single.html" title="" class="theme-btn">buy now</a>
+                    <a href="#" title="" class="theme-btn">add to cart</a>
+                </div>
+                <div class="cart-product-thumb-slider">
+                    <div class="cart-product-thumb">
+                        <img src="images/resource/jacket1.png" alt="" />
+                    </div>
+                    <div class="cart-product-thumb">
+                        <img src="images/resource/jacket2.png" alt="" />
+                    </div>
+                    <div class="cart-product-thumb">
+                        <img src="images/resource/jacket3.png" alt="" />
+                    </div>
+                </div>
+                <div class="promo">
+                    <img src="images/vt.png" alt="" />
+                    50% off Studiofit Light Grey Hooded Jacket code FGLPW245
+                </div>
             </div>
-        </div>
-    </div>
-    
+        </div><!--shop-product-singele-->
+    </div><!--shop-single-section-->
 
-</div>
+    <section class="main-slider-v2">
+        <div class="slider-nav">
+            <div class="main-slider-slide">
+                <img src="images/resource/main-banner1.jpg" alt=""  class="animated" data-animation-in="zoomInImage" />
+                <div class="main-slider-content">
+                    <span>Haute Couture</span>
+                    <h1>New Arrivals</h1>
+                    <p>Porem ipsum dolor sit amet consectetur </p>
+                    <a href="shop-single.html" title="" class="theme-btn">buy now</a>
+                </div>
+            </div><!--main-slider-slide-->
+            <div class="main-slider-slide">
+                <img src="images/resource/main-banner2.jpg" alt=""  class="animated" data-animation-in="zoomInImage" />
+                <div class="main-slider-content">
+                    <span>Haute Couture</span>
+                    <h1>New Arrivals</h1>
+                    <p>Porem ipsum dolor sit amet consectetur </p>
+                    <a href="shop-single.html" title="" class="theme-btn">buy now</a>
+                </div>
+            </div><!--main-slider-slide-->
+            <div class="main-slider-slide">
+                <img src="images/resource/main-banner3.jpg" alt=""  class="animated" data-animation-in="zoomInImage" />
+                <div class="main-slider-content">
+                    <span>Haute Couture</span>
+                    <h1>New Arrivals</h1>
+                    <p>Porem ipsum dolor sit amet consectetur </p>
+                    <a href="shop-single.html" title="" class="theme-btn">buy now</a>
+                </div>
+            </div><!--main-slider-slide-->
+        </div>
+        <div class="slider-dots-box"></div>
+    </section><!--main-slider-->
+    
+ 
+    <section class="about-section-v2">
+        <div class="container">
+            <div class="about-content-v2">
+                <h2>Style is the <img src="images/resource/c1.png" alt="" /> perfection  <img src="images/resource/c2.png" alt="" /> point of view <img src="images/resource/c3.png" alt="" /></h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In luctus leo sit amet lorem egestas iaculis. Donec nibh enim, pharetra vel turpis non, vulputate luctus ex. Phasellus pharetra ut dolor ac rutrum. Curabitur molestie nec mi in congue. Nam luctus ante quis urna molestie, ut venenatis diam sagittis. Nam ligula velit, </p>
+                <a href="about.html" title="" class="theme-btn">about more</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="lookbook-section-v2">
+        <div class="container">
+            <div class="lookbook-v2-slide">
+                <div class="lookbook-v2 row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-3">
+                        <div class="lookbook-inner wow fadeIn" data-wow-delay="200ms">
+                            <img src="images/resource/book1.jpg" alt="" />
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-3">
+                        <div class="lookbook-inner wow fadeIn" data-wow-delay="400ms">
+                            <img src="images/resource/book2.jpg" alt="" />
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-3">
+                        <div class="lookbook-inner wow fadeIn" data-wow-delay="600ms">
+                            <img src="images/resource/book3.jpg" alt="" />
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-3">
+                        <div class="lookbook-inner wow fadeIn" data-wow-delay="800ms">
+                            <img src="images/resource/book4.jpg" alt="" />
+                        </div>
+                    </div>
+
+                </div>
+                <h1 class="pb-text wow slideInUp">lookbook</h1>
+            </div>
+        </div>
+    </section><!--lookbook-section-v2-->
+
+    <section class="marquee-section v2 web-slides">
+        <div class='marquee6' data-duration='17000' data-gap='10' data-duplicated='true' >
+            <h2>The best fashion store can deliver</h2>
+        </div>
+    </section>
+
+    <section class="category-section-v2">
+        <div class="container-full">
+            <div class="sec-title space-v2 wow fadeInUp">
+                <h2>GLANCE Category</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In luctus leo sit amet lorem egestas iaculis. Donec nibh enim, pharetra vel turpis</p>
+            </div>
+            <div class="categories-v2">
+                <div class="swiper-container swiper3">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="category-slide">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery1.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Men Clothing</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery2.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Men's Grooming</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery3.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Innerwear & Loungewear</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery4.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Accessories</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery5.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Sunglasses</a></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="category-slide">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery1.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Men Clothing</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery2.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Men's Grooming</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery3.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Innerwear & Loungewear</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery4.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Accessories</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery5.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Sunglasses</a></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="category-slide">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery1.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Men Clothing</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery2.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Men's Grooming</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery3.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Innerwear & Loungewear</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery4.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Accessories</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery5.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Sunglasses</a></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="category-slide">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery1.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Men Clothing</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery2.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Men's Grooming</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery3.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Innerwear & Loungewear</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery4.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Accessories</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery5.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Sunglasses</a></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="category-slide">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery1.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Men Clothing</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery2.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Men's Grooming</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery3.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Innerwear & Loungewear</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery4.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Accessories</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery5.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Sunglasses</a></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="category-slide">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery1.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Men Clothing</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery2.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Men's Grooming</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery3.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Innerwear & Loungewear</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery4.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Accessories</a></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="category-v2">
+                                            <div class="category-v2-img">
+                                                <img src="images/resource/gallery5.jpg" alt="" />
+                                            </div>
+                                            <h3><a href="shop-single.html" title="">Sunglasses</a></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- scrollbar -->
+                    <div class="swiper-scrollbar v3">
+                        <span class="swiper-scrollbar-drag"><span class="drag-inner">DISCOVER MORE</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="product-view-section">
+        <div class="container-fluid">
+            <div class="product-view-banner">
+                <h2>Sports</h2>
+                <h2 class="v2">Glance</h2>
+                <div class="product-view-slider">
+                    <div class="product-view-slide">
+                        <div class="product-card">
+                            <span>Deodorant</span>
+                            <h3><a href="shop-single.html" title="">Women's Perfume</a></h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam semper lacus id libero porta blandit. </p>
+                            <div class="price">
+                                <span>$25.45</span>
+                                <del>$35.00</del>
+                            </div>
+                            <div class="cart-items-add">
+                                <div class="quantity">
+                                    <button class="plus-btn" type="button" name="button">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    <input type="text" name="name" value="1">
+                                    <button class="minus-btn" type="button" name="button">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <a href="shop-single.html" title="" class="theme-btn">buy now</a>
+                            </div>
+                        </div>
+                        <div class="product-view-image">
+                            <img src="images/resource/product-img1.png" alt="" />
+                        </div>
+                    </div><!--product-view-slides-->
+                    <div class="product-view-slide">
+                        <div class="product-card">
+                            <span>Deodorant</span>
+                            <h3><a href="shop-single.html" title="">Women's Perfume</a></h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam semper lacus id libero porta blandit. </p>
+                            <div class="price">
+                                <span>$25.45</span>
+                                <del>$35.00</del>
+                            </div>
+                            <div class="cart-items-add">
+                                <div class="quantity">
+                                    <button class="plus-btn" type="button" name="button">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    <input type="text" name="name" value="1">
+                                    <button class="minus-btn" type="button" name="button">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <a href="shop-single.html" title="" class="theme-btn">buy now</a>
+                            </div>
+                        </div>
+                        <div class="product-view-image">
+                            <img src="images/resource/product-img3.png" alt="" />
+                        </div>
+                    </div><!--product-view-slides-->
+                    <div class="product-view-slide">
+                        <div class="product-card">
+                            <span>Deodorant</span>
+                            <h3><a href="shop-single.html" title="">Women's Perfume</a></h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam semper lacus id libero porta blandit. </p>
+                            <div class="price">
+                                <span>$25.45</span>
+                                <del>$35.00</del>
+                            </div>
+                            <div class="cart-items-add">
+                                <div class="quantity">
+                                    <button class="plus-btn" type="button" name="button">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    <input type="text" name="name" value="1">
+                                    <button class="minus-btn" type="button" name="button">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <a href="shop-single.html" title="" class="theme-btn">buy now</a>
+                            </div>
+                        </div>
+                        <div class="product-view-image">
+                            <img src="images/resource/product-img1.png" alt="" />
+                        </div>
+                    </div><!--product-view-slides-->
+                </div><!--product-view-slider-->
+            </div>
+        </div>
+    </section><!--product-view-section-->
+
+    <section class="marquee-section v2">
+        <div class='marquee' data-duration='17000' data-gap='10' data-duplicated='true' >
+            <h2>The best fashion store can deliver</h2>
+        </div>
+    </section>
+
+    <section class="collection-section v2">
+        <div class="container-fluid">
+            <div class="sec-title space-v2 wow slideInUp">
+                <h2>new collection</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In luctus leo sit amet lorem egestas iaculis. Donec nibh enim, pharetra vel turpis</p>
+            </div>
+            <div class="product-categories v2 without-slide row">
+                <div class="col-lg-2">
+                    <div class="product-cat">
+                        <div class="product-img">
+                            <img src="images/resource/ct1.jpg" alt="">
+                            <span class="pro-category">new</span>
+                        </div>
+                        <div class="product-hover-info">
+                            <div class="product-hover-head">
+                                <ul class="pt-links">
+                                    <li>new</li>
+                                    <li>sales</li>
+                                </ul>
+                                <a href="#" title="" class="fvrt-product"><img src="images/icons/heart.svg" alt="" /></a>
+                            </div>
+                            <div class="product-info-hover">
+                                <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                                <span>Loues Vuitto</span>
+                                <div class="pricee">
+                                    <span>$25.45</span>
+                                </div>
+                                <ul class="pro-colors">
+                                    <li class="clr1"></li>
+                                    <li class="clr2"></li>
+                                    <li class="clr3"></li>
+                                    <li class="clr4"></li>
+                                </ul>
+                                <ul class="variations">
+                                    <li>s</li>
+                                    <li>m</li>
+                                    <li>l</li>
+                                </ul>
+                                <ul class="pro-buttons">
+                                    <li><a href="#" title="" class="theme-btn">quick add</a></li>
+                                    <li><a href="#" title="" class="theme-btn quick-view-btn">quick view</a></li>
+                                </ul>
+                            </div>
+                        </div><!--product-hover-info-->
+                        <div class="product-info">
+                            <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                            <span class="product-price">$25.45</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="product-cat">
+                        <div class="product-img">
+                            <img src="images/resource/ct2.jpg" alt="">
+                            <span class="pro-category">new</span>
+                        </div>
+                        <div class="product-hover-info">
+                            <div class="product-hover-head">
+                                <ul class="pt-links">
+                                    <li>new</li>
+                                    <li>sales</li>
+                                </ul>
+                                <a href="#" title="" class="fvrt-product"><img src="images/icons/heart.svg" alt="" /></a>
+                            </div>
+                            <div class="product-info-hover">
+                                <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                                <span>Loues Vuitto</span>
+                                <div class="pricee">
+                                    <span>$25.45</span>
+                                </div>
+                                <ul class="pro-colors">
+                                    <li class="clr1"></li>
+                                    <li class="clr2"></li>
+                                    <li class="clr3"></li>
+                                    <li class="clr4"></li>
+                                </ul>
+                                <ul class="variations">
+                                    <li>s</li>
+                                    <li>m</li>
+                                    <li>l</li>
+                                </ul>
+                                <ul class="pro-buttons">
+                                    <li><a href="#" title="" class="theme-btn">quick add</a></li>
+                                    <li><a href="#" title="" class="theme-btn quick-view-btn">quick view</a></li>
+                                </ul>
+                            </div>
+                        </div><!--product-hover-info-->
+                        <div class="product-info">
+                            <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                            <span class="product-price">$25.45</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="product-cat">
+                        <div class="product-img">
+                            <img src="images/resource/col1.jpg" alt="">
+                            <span class="pro-category">new</span>
+                        </div>
+                        <div class="product-hover-info">
+                            <div class="product-hover-head">
+                                <ul class="pt-links">
+                                    <li>new</li>
+                                    <li>sales</li>
+                                </ul>
+                                <a href="#" title="" class="fvrt-product"><img src="images/icons/heart.svg" alt="" /></a>
+                            </div>
+                            <div class="product-info-hover">
+                                <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                                <span>Loues Vuitto</span>
+                                <div class="pricee">
+                                    <span>$25.45</span>
+                                </div>
+                                <ul class="pro-colors">
+                                    <li class="clr1"></li>
+                                    <li class="clr2"></li>
+                                    <li class="clr3"></li>
+                                    <li class="clr4"></li>
+                                </ul>
+                                <ul class="variations">
+                                    <li>s</li>
+                                    <li>m</li>
+                                    <li>l</li>
+                                </ul>
+                                <ul class="pro-buttons">
+                                    <li><a href="#" title="" class="theme-btn">quick add</a></li>
+                                    <li><a href="#" title="" class="theme-btn quick-view-btn">quick view</a></li>
+                                </ul>
+                            </div>
+                        </div><!--product-hover-info-->
+                        <div class="product-info">
+                            <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                            <span class="product-price">$25.45</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="product-cat">
+                        <div class="product-img">
+                            <img src="images/resource/ct4.jpg" alt="">
+                            <span class="pro-category">new</span>
+                        </div>
+                        <div class="product-hover-info">
+                            <div class="product-hover-head">
+                                <ul class="pt-links">
+                                    <li>new</li>
+                                    <li>sales</li>
+                                </ul>
+                                <a href="#" title="" class="fvrt-product"><img src="images/icons/heart.svg" alt="" /></a>
+                            </div>
+                            <div class="product-info-hover">
+                                <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                                <span>Loues Vuitto</span>
+                                <div class="pricee">
+                                    <span>$25.45</span>
+                                </div>
+                                <ul class="pro-colors">
+                                    <li class="clr1"></li>
+                                    <li class="clr2"></li>
+                                    <li class="clr3"></li>
+                                    <li class="clr4"></li>
+                                </ul>
+                                <ul class="variations">
+                                    <li>s</li>
+                                    <li>m</li>
+                                    <li>l</li>
+                                </ul>
+                                <ul class="pro-buttons">
+                                    <li><a href="#" title="" class="theme-btn">quick add</a></li>
+                                    <li><a href="#" title="" class="theme-btn quick-view-btn">quick view</a></li>
+                                </ul>
+                            </div>
+                        </div><!--product-hover-info-->
+                        <div class="product-info">
+                            <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                            <span class="product-price">$25.45</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="product-cat">
+                        <div class="product-img">
+                            <img src="images/resource/ct5.jpg" alt="">
+                            <span class="pro-category">new</span>
+                        </div>
+                        <div class="product-hover-info">
+                            <div class="product-hover-head">
+                                <ul class="pt-links">
+                                    <li>new</li>
+                                    <li>sales</li>
+                                </ul>
+                                <a href="#" title="" class="fvrt-product"><img src="images/icons/heart.svg" alt="" /></a>
+                            </div>
+                            <div class="product-info-hover">
+                                <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                                <span>Loues Vuitto</span>
+                                <div class="pricee">
+                                    <span>$25.45</span>
+                                </div>
+                                <ul class="pro-colors">
+                                    <li class="clr1"></li>
+                                    <li class="clr2"></li>
+                                    <li class="clr3"></li>
+                                    <li class="clr4"></li>
+                                </ul>
+                                <ul class="variations">
+                                    <li>s</li>
+                                    <li>m</li>
+                                    <li>l</li>
+                                </ul>
+                                <ul class="pro-buttons">
+                                    <li><a href="#" title="" class="theme-btn">quick add</a></li>
+                                    <li><a href="#" title="" class="theme-btn quick-view-btn">quick view</a></li>
+                                </ul>
+                            </div>
+                        </div><!--product-hover-info-->
+                        <div class="product-info">
+                            <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                            <span class="product-price">$25.45</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="product-cat">
+                        <div class="product-img">
+                            <img src="images/resource/ct6.jpg" alt="">
+                            <span class="pro-category">new</span>
+                        </div>
+                        <div class="product-hover-info">
+                            <div class="product-hover-head">
+                                <ul class="pt-links">
+                                    <li>new</li>
+                                    <li>sales</li>
+                                </ul>
+                                <a href="#" title="" class="fvrt-product"><img src="images/icons/heart.svg" alt="" /></a>
+                            </div>
+                            <div class="product-info-hover">
+                                <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                                <span>Loues Vuitto</span>
+                                <div class="pricee">
+                                    <span>$25.45</span>
+                                </div>
+                                <ul class="pro-colors">
+                                    <li class="clr1"></li>
+                                    <li class="clr2"></li>
+                                    <li class="clr3"></li>
+                                    <li class="clr4"></li>
+                                </ul>
+                                <ul class="variations">
+                                    <li>s</li>
+                                    <li>m</li>
+                                    <li>l</li>
+                                </ul>
+                                <ul class="pro-buttons">
+                                    <li><a href="#" title="" class="theme-btn">quick add</a></li>
+                                    <li><a href="#" title="" class="theme-btn quick-view-btn">quick view</a></li>
+                                </ul>
+                            </div>
+                        </div><!--product-hover-info-->
+                        <div class="product-info">
+                            <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                            <span class="product-price">$25.45</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="product-cat">
+                        <div class="product-img">
+                            <img src="images/resource/ct7.jpg" alt="">
+                            <span class="pro-category">new</span>
+                        </div>
+                        <div class="product-hover-info">
+                            <div class="product-hover-head">
+                                <ul class="pt-links">
+                                    <li>new</li>
+                                    <li>sales</li>
+                                </ul>
+                                <a href="#" title="" class="fvrt-product"><img src="images/icons/heart.svg" alt="" /></a>
+                            </div>
+                            <div class="product-info-hover">
+                                <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                                <span>Loues Vuitto</span>
+                                <div class="pricee">
+                                    <span>$25.45</span>
+                                </div>
+                                <ul class="pro-colors">
+                                    <li class="clr1"></li>
+                                    <li class="clr2"></li>
+                                    <li class="clr3"></li>
+                                    <li class="clr4"></li>
+                                </ul>
+                                <ul class="variations">
+                                    <li>s</li>
+                                    <li>m</li>
+                                    <li>l</li>
+                                </ul>
+                                <ul class="pro-buttons">
+                                    <li><a href="#" title="" class="theme-btn">quick add</a></li>
+                                    <li><a href="#" title="" class="theme-btn quick-view-btn">quick view</a></li>
+                                </ul>
+                            </div>
+                        </div><!--product-hover-info-->
+                        <div class="product-info">
+                            <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                            <span class="product-price">$25.45</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="product-cat">
+                        <div class="product-img">
+                            <img src="images/resource/ct8.jpg" alt="">
+                            <span class="pro-category">new</span>
+                        </div>
+                        <div class="product-hover-info">
+                            <div class="product-hover-head">
+                                <ul class="pt-links">
+                                    <li>new</li>
+                                    <li>sales</li>
+                                </ul>
+                                <a href="#" title="" class="fvrt-product"><img src="images/icons/heart.svg" alt="" /></a>
+                            </div>
+                            <div class="product-info-hover">
+                                <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                                <span>Loues Vuitto</span>
+                                <div class="pricee">
+                                    <span>$25.45</span>
+                                </div>
+                                <ul class="pro-colors">
+                                    <li class="clr1"></li>
+                                    <li class="clr2"></li>
+                                    <li class="clr3"></li>
+                                    <li class="clr4"></li>
+                                </ul>
+                                <ul class="variations">
+                                    <li>s</li>
+                                    <li>m</li>
+                                    <li>l</li>
+                                </ul>
+                                <ul class="pro-buttons">
+                                    <li><a href="#" title="" class="theme-btn">quick add</a></li>
+                                    <li><a href="#" title="" class="theme-btn quick-view-btn">quick view</a></li>
+                                </ul>
+                            </div>
+                        </div><!--product-hover-info-->
+                        <div class="product-info">
+                            <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                            <span class="product-price">$25.45</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="product-cat">
+                        <div class="product-img">
+                            <img src="images/resource/ct9.jpg" alt="">
+                            <span class="pro-category">new</span>
+                        </div>
+                        <div class="product-hover-info">
+                            <div class="product-hover-head">
+                                <ul class="pt-links">
+                                    <li>new</li>
+                                    <li>sales</li>
+                                </ul>
+                                <a href="#" title="" class="fvrt-product"><img src="images/icons/heart.svg" alt="" /></a>
+                            </div>
+                            <div class="product-info-hover">
+                                <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                                <span>Loues Vuitto</span>
+                                <div class="pricee">
+                                    <span>$25.45</span>
+                                </div>
+                                <ul class="pro-colors">
+                                    <li class="clr1"></li>
+                                    <li class="clr2"></li>
+                                    <li class="clr3"></li>
+                                    <li class="clr4"></li>
+                                </ul>
+                                <ul class="variations">
+                                    <li>s</li>
+                                    <li>m</li>
+                                    <li>l</li>
+                                </ul>
+                                <ul class="pro-buttons">
+                                    <li><a href="#" title="" class="theme-btn">quick add</a></li>
+                                    <li><a href="#" title="" class="theme-btn quick-view-btn">quick view</a></li>
+                                </ul>
+                            </div>
+                        </div><!--product-hover-info-->
+                        <div class="product-info">
+                            <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                            <span class="product-price">$25.45</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="product-cat">
+                        <div class="product-img">
+                            <img src="images/resource/ct10.jpg" alt="">
+                            <span class="pro-category">new</span>
+                        </div>
+                        <div class="product-hover-info">
+                            <div class="product-hover-head">
+                                <ul class="pt-links">
+                                    <li>new</li>
+                                    <li>sales</li>
+                                </ul>
+                                <a href="#" title="" class="fvrt-product"><img src="images/icons/heart.svg" alt="" /></a>
+                            </div>
+                            <div class="product-info-hover">
+                                <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                                <span>Loues Vuitto</span>
+                                <div class="pricee">
+                                    <span>$25.45</span>
+                                </div>
+                                <ul class="pro-colors">
+                                    <li class="clr1"></li>
+                                    <li class="clr2"></li>
+                                    <li class="clr3"></li>
+                                    <li class="clr4"></li>
+                                </ul>
+                                <ul class="variations">
+                                    <li>s</li>
+                                    <li>m</li>
+                                    <li>l</li>
+                                </ul>
+                                <ul class="pro-buttons">
+                                    <li><a href="#" title="" class="theme-btn">quick add</a></li>
+                                    <li><a href="#" title="" class="theme-btn quick-view-btn">quick view</a></li>
+                                </ul>
+                            </div>
+                        </div><!--product-hover-info-->
+                        <div class="product-info">
+                            <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                            <span class="product-price">$25.45</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><!--collection-section-->
+
+    <section class="glance-banner">
+        <div class="video-intro wow fadeInUp">
+            <video id="video1" controls autoplay="autoplay" loop muted>
+                <source src="media/v1.mp4" type="video/mp4"/>
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </section>   
+    <section class="testimonial-section-v2">
+        <div class="container-full">
+            <div class="sec-title space-v2 wow fadeInUp">
+                <h2>client testimonials</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In luctus leo sit amet lorem egestas iaculis. Donec nibh enim, pharetra vel turpis</p>
+            </div>
+            <div class="row testi-v2-slider wow slideInUp">
+                <div class="col-lg-4">
+                    <div class="testi2-slide">
+                        <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. In luctus leo sit amet lorem egestas iaculis. Donec nibh enim, pharetra vel turpis</p>
+                        <div class="testi2-info">
+                            <img src="images/resource/author1.png" alt="" />
+                            <h4>Arbaz Ali</h4>
+                        </div>
+                    </div><!--testi2-slide-->
+                </div>
+                <div class="col-lg-4">
+                    <div class="testi2-slide">
+                        <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. In luctus leo sit amet lorem egestas iaculis. Donec nibh enim, pharetra vel turpis</p>
+                        <div class="testi2-info">
+                            <img src="images/resource/author2.png" alt="" />
+                            <h4>Arbaz Ali</h4>
+                        </div>
+                    </div><!--testi2-slide-->
+                </div>
+                <div class="col-lg-4">
+                    <div class="testi2-slide">
+                        <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. In luctus leo sit amet lorem egestas iaculis. Donec nibh enim, pharetra vel turpis</p>
+                        <div class="testi2-info">
+                            <img src="images/resource/author3.png" alt="" />
+                            <h4>Arbaz Ali</h4>
+                        </div>
+                    </div><!--testi2-slide-->
+                </div>
+                <div class="col-lg-4">
+                    <div class="testi2-slide">
+                        <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. In luctus leo sit amet lorem egestas iaculis. Donec nibh enim, pharetra vel turpis</p>
+                        <div class="testi2-info">
+                            <img src="images/resource/author1.png" alt="" />
+                            <h4>Arbaz Ali</h4>
+                        </div>
+                    </div><!--testi2-slide-->
+                </div>
+                <div class="col-lg-4">
+                    <div class="testi2-slide">
+                        <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. In luctus leo sit amet lorem egestas iaculis. Donec nibh enim, pharetra vel turpis</p>
+                        <div class="testi2-info">
+                            <img src="images/resource/author2.png" alt="" />
+                            <h4>Arbaz Ali</h4>
+                        </div>
+                    </div><!--testi2-slide-->
+                </div>
+                <div class="col-lg-4">
+                    <div class="testi2-slide">
+                        <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. In luctus leo sit amet lorem egestas iaculis. Donec nibh enim, pharetra vel turpis</p>
+                        <div class="testi2-info">
+                            <img src="images/resource/author3.png" alt="" />
+                            <h4>Arbaz Ali</h4>
+                        </div>
+                    </div><!--testi2-slide-->
+                </div>
+            </div>
+        </div>
+    </section><!--testimonial-section-v2-->
+
+    <section class="trending-section-v2">
+        <div class="container">
+            <div class="sec-title space-v2 wow fadeInUp">
+                <h2>trending of the week</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In luctus leo sit amet lorem egestas iaculis. Donec nibh enim, pharetra vel turpis</p>
+            </div>
+            <div class="trending-slider wow slideInUp">
+                <div class="trending-slide">
+                    <div class="trending-img">
+                        <img src="images/resource/trending1.jpg" alt="" />
+                        <div class="trending-caption-v2">
+                            <div class="trending-thumb">
+                                <img src="images/resource/trending2.jpg" alt="" />
+                            </div>
+                            <h3><a href="shop-single.html" title="">Sunglasses</a></h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur </p>
+                            <div class="price">
+                                <span>$25.45 <del>$35.00</del></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="trending-img-v2">
+                        <img src="images/resource/trending3.png" alt="" />
+                        <div class="featured-hover">
+                            <span class="hvr"></span>
+                            <div class="hvr-content">
+                                <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                                <span class="price">$25.45</span>
+                                <ul class="varies">
+                                    <li>S</li>
+                                    <li>m</li>
+                                    <li>l</li>
+                                </ul>
+                                <a href="#" title="" class="quick-add">quick add</a>
+                            </div>
+                        </div>
+                        <div class="featured-hover v2">
+                            <span class="hvr"></span>
+                            <div class="hvr-content">
+                                <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                                <span class="price">$25.45</span>
+                                <ul class="varies">
+                                    <li>S</li>
+                                    <li>m</li>
+                                    <li>l</li>
+                                </ul>
+                                <a href="#" title="" class="quick-add">quick add</a>
+                            </div>
+                        </div>
+                        <div class="featured-hover v3">
+                            <span class="hvr"></span>
+                            <div class="hvr-content">
+                                <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                                <span class="price">$25.45</span>
+                                <ul class="varies">
+                                    <li>S</li>
+                                    <li>m</li>
+                                    <li>l</li>
+                                </ul>
+                                <a href="#" title="" class="quick-add">quick add</a>
+                            </div>
+                        </div>
+                        <div class="featured-hover v5">
+                            <span class="hvr"></span>
+                            <div class="hvr-content">
+                                <h3><a href="shop-single.html" title="">Casual Jacket</a></h3>
+                                <span class="price">$25.45</span>
+                                <ul class="varies">
+                                    <li>S</li>
+                                    <li>m</li>
+                                    <li>l</li>
+                                </ul>
+                                <a href="#" title="" class="quick-add">quick add</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><!--trending-section-v2-->
+
+
+    <section class="brand-section v2">
+        <div class="container">
+            <div class="pt-logos">
+                <div class="pt-logo wow fadeIn">
+                    <img src="images/resource/pt1.png" alt="" />
+                </div>
+                <div class="pt-logo wow fadeIn" data-wow-delay="300ms">
+                    <img src="images/resource/pt2.png" alt="" />
+                </div>
+                <div class="pt-logo wow fadeIn" data-wow-delay="500ms">
+                    <img src="images/resource/pt3.png" alt="" />
+                </div>
+                <div class="pt-logo wow fadeIn" data-wow-delay="700ms">
+                    <img src="images/resource/pt4.png" alt="" />
+                </div>
+                <div class="pt-logo wow fadeIn" data-wow-delay="900ms">
+                    <img src="images/resource/pt5.png" alt="" />
+                </div>
+            </div>
+        </div>
+    </section><!--brand-section-->
+
+    <section class="collection-new">
+        <div class="container-fluid">
+            <div class="title-clt wow slideInUp">
+                <h2>The joy <img src="images/resource/cl1.png" alt="" /> of dressing <img src="images/resource/cl2.png" alt="" /> is an art</h2>
+            </div>
+            <div class="flex-container wow slideInUp">
+                <div class="flex-slide accessories">
+                    <h2>accessories</h2>
+                    <div class="flex-content">
+                        <h3>Blazer</h3>
+                        <p>Lorem ipsum dolor sit consectetur adipiscing elit.</p>
+                        <a href="shop-single.html" title="" class="theme-btn">shop now</a>
+                    </div>
+                </div>
+                <div class="flex-slide fashion">
+                    <h2>fashion</h2>
+                    <div class="flex-content">
+                        <h3>Blazer</h3>
+                        <p>Lorem ipsum dolor sit consectetur adipiscing elit.</p>
+                        <a href="shop-single.html" title="" class="theme-btn">shop now</a>
+                    </div>
+                </div>
+                <div class="flex-slide sneekers">
+                    <h2>sneakers</h2>
+                    <div class="flex-content">
+                        <h3>Blazer</h3>
+                        <p>Lorem ipsum dolor sit consectetur adipiscing elit.</p>
+                        <a href="shop-single.html" title="" class="theme-btn">shop now</a>
+                    </div>
+                </div>
+                <div class="flex-slide blazer">
+                    <h2>Blazer</h2>
+                    <div class="flex-content">
+                        <h3>Blazer</h3>
+                        <p>Lorem ipsum dolor sit consectetur adipiscing elit.</p>
+                        <a href="shop-single.html" title="" class="theme-btn">shop now</a>
+                    </div>
+                </div>
+                <div class="flex-slide polo">
+                    <h2>Polo shirt</h2>
+                    <div class="flex-content">
+                        <h3>Blazer</h3>
+                        <p>Lorem ipsum dolor sit consectetur adipiscing elit.</p>
+                        <a href="shop-single.html" title="" class="theme-btn">shop now</a>
+                    </div>
+                </div>
+                <div class="flex-slide bag">
+                    <h2>Hand bag</h2>
+                    <div class="flex-content">
+                        <h3>Blazer</h3>
+                        <p>Lorem ipsum dolor sit consectetur adipiscing elit.</p>
+                        <a href="shop-single.html" title="" class="theme-btn">shop now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> 
+
+<!-- Custom JavaScript removed to prevent null reference errors -->
 
 <script>
+// Comprehensive fix for overlay issues
 document.addEventListener('DOMContentLoaded', function() {
-    const sliderContainer = document.getElementById('sliderContainer');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const dots = document.querySelectorAll('.dot-indicator');
+    console.log('Index page loaded successfully');
     
-    let currentSlide = 0;
-    const totalSlides = {{ count($sliderImages) }}; // Dynamic number of slides
-    let autoSlideInterval;
-    
-    // Function to update slider position
-    function updateSlider() {
-        sliderContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
-        
-        // Update dots
-        dots.forEach((dot, index) => {
-            if (index === currentSlide) {
-                dot.style.background = 'rgba(255, 255, 255, 1)';
-            } else {
-                dot.style.background = 'rgba(255, 255, 255, 0.5)';
+    // Function to remove overlay classes
+    function removeOverlayClasses() {
+        const pageWrapper = document.querySelector('.page-wrapper');
+        if (pageWrapper) {
+            if (pageWrapper.classList.contains('overlay') || 
+                pageWrapper.classList.contains('page-overlay') ||
+                pageWrapper.classList.contains('overlay-remove')) {
+                pageWrapper.classList.remove('overlay', 'page-overlay', 'overlay-remove');
             }
-        });
+        }
     }
     
-    // Next slide
-    function nextSlide() {
-        currentSlide = (currentSlide + 1) % totalSlides;
-        updateSlider();
-    }
+    // Remove overlay classes immediately
+    removeOverlayClasses();
     
-    // Previous slide
-    function prevSlide() {
-        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-        updateSlider();
-    }
-    
-    // Go to specific slide
-    function goToSlide(index) {
-        currentSlide = index;
-        updateSlider();
-    }
-    
-    // Start auto-sliding
-    function startAutoSlide() {
-        autoSlideInterval = setInterval(nextSlide, 4000); // Change slide every 4 seconds
-    }
-    
-    // Stop auto-sliding
-    function stopAutoSlide() {
-        clearInterval(autoSlideInterval);
-    }
-    
-    // Event listeners
-    nextBtn.addEventListener('click', () => {
-        nextSlide();
-        stopAutoSlide();
-        startAutoSlide(); // Restart auto-slide after manual interaction
-    });
-    
-    prevBtn.addEventListener('click', () => {
-        prevSlide();
-        stopAutoSlide();
-        startAutoSlide(); // Restart auto-slide after manual interaction
-    });
-    
-    // Dot navigation
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            goToSlide(index);
-            stopAutoSlide();
-            startAutoSlide(); // Restart auto-slide after manual interaction
-        });
-    });
-    
-    // Pause auto-slide on hover
-    const slider = document.getElementById('imageSlider');
-    slider.addEventListener('mouseenter', stopAutoSlide);
-    slider.addEventListener('mouseleave', startAutoSlide);
-    
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') {
-            prevSlide();
-            stopAutoSlide();
-            startAutoSlide();
-        } else if (e.key === 'ArrowRight') {
-            nextSlide();
-            stopAutoSlide();
-            startAutoSlide();
+    // Check for any active popup modals and remove them
+    const popupModals = document.querySelectorAll('.popup-quick-view, .subscribe-popup');
+    popupModals.forEach(modal => {
+        if (modal.classList.contains('active')) {
+            console.log('Removing active class from popup:', modal.className);
+            modal.classList.remove('active');
         }
     });
     
-    // Initialize first slide and start auto-sliding
-    updateSlider();
-    startAutoSlide();
-    
-    // Product image hover effects
-    const productImages = document.querySelectorAll('a[href*="product.show"] img');
-    productImages.forEach(img => {
-        img.addEventListener('mouseenter', function() {
-            this.style.transform = 'scale(1.05)';
-        });
-        
-        img.addEventListener('mouseleave', function() {
-            this.style.transform = 'scale(1)';
-        });
+    // Hide any loading elements
+    const loadingElements = document.querySelectorAll('.loading');
+    loadingElements.forEach(loading => {
+        if (loading.style.display !== 'none') {
+            console.log('Hiding loading element');
+            loading.style.display = 'none';
+        }
     });
     
-    // Product card hover effects
-    const productCards = document.querySelectorAll('div[style*="display: flex; flex-direction: column"]');
-    productCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-5px)';
-            this.style.boxShadow = '0 10px 25px rgba(0,0,0,0.1)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-            this.style.boxShadow = 'none';
-        });
-    });
+    // Override jQuery addClass to prevent overlay classes (one-time setup)
+    if (window.jQuery) {
+        const originalAddClass = window.jQuery.fn.addClass;
+        window.jQuery.fn.addClass = function(className) {
+            if (typeof className === 'string' && 
+                (className.includes('overlay') || className.includes('page-overlay'))) {
+                // Silently prevent overlay classes without console spam
+                return this;
+            }
+            return originalAddClass.call(this, className);
+        };
+    }
+    
+    console.log('Comprehensive overlay protection applied');
 });
 </script>
 @endsection 
