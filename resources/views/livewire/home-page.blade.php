@@ -493,7 +493,7 @@
 <section class="collection-section v2">
     <div class="container-fluid">
         <div class="sec-title space-v2 wow slideInUp">
-            <h2>FEATURED COLLECTION</h2>
+            <h2>LATEST COLLECTIONS</h2>
             <p>Discover our latest premium designs crafted with exceptional quality and contemporary style</p>
         </div>
         <div class="product-categories v2 without-slide row">

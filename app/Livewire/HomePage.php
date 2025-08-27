@@ -23,8 +23,8 @@ class HomePage extends Component
             $query->orderBy('sort_order');
         }])->latest()->take(4)->get();
         
-        // Featured products for the featured collection section
-        $this->featuredProducts = Product::where('is_featured', true)->latest()->take(3)->get();
+        // Latest products for the latest collections section
+        $this->featuredProducts = Product::latest()->take(3)->get();
         
         // Load images manually to ensure they're loaded properly
         foreach ($this->featuredProducts as $product) {
@@ -39,8 +39,8 @@ class HomePage extends Component
             $product->setRelation('images', $images);
         }
         
-        // Debug: Log the featured products and their images
-        \Log::info('Featured products loaded:', [
+        // Debug: Log the latest products and their images
+        \Log::info('Latest products loaded:', [
             'count' => $this->featuredProducts->count(),
             'products' => $this->featuredProducts->map(function($product) {
                 return [
