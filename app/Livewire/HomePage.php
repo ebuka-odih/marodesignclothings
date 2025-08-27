@@ -23,21 +23,10 @@ class HomePage extends Component
             $query->orderBy('sort_order');
         }])->latest()->take(4)->get();
         
-        // Latest products for the latest collections section
-        $this->featuredProducts = Product::latest()->take(3)->get();
-        
-        // Load images manually to ensure they're loaded properly
-        foreach ($this->featuredProducts as $product) {
-            $product->load(['category']);
-            
-            // Load images manually using the morphMany relationship
-            $images = \App\Models\Image::where('imageable_type', 'App\Models\Product')
-                ->where('imageable_id', $product->id)
-                ->orderBy('sort_order')
-                ->get();
-            
-            $product->setRelation('images', $images);
-        }
+        // Latest products for the latest collections section with images
+        $this->featuredProducts = Product::with(['category', 'images' => function($query) {
+            $query->orderBy('sort_order');
+        }])->latest()->take(3)->get();
         
         // Debug: Log the latest products and their images
         \Log::info('Latest products loaded:', [

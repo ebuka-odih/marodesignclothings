@@ -501,48 +501,33 @@
             <div class="col-lg-4">
                 <div class="product-cat">
                     <div class="product-img">
-                        @if($product->images && $product->images->count() > 0 && $product->images->first())
-                            <img src="{{ asset('storage/' . $product->images->first()->path) }}" alt="{{ $product->name }}">
+                        @php
+                            $productImages = \App\Models\Image::where('imageable_type', 'App\Models\Product')
+                                ->where('imageable_id', $product->id)
+                                ->orderBy('sort_order')
+                                ->get();
+                        @endphp
+                        @if($productImages->count() > 0)
+                            <img src="{{ asset('storage/' . $productImages->first()->path) }}" alt="{{ $product->name }}">
                         @else
                             <img src="{{ asset('images/placeholder.jpg') }}" alt="{{ $product->name }}">
                         @endif
                     </div>
                     <div class="product-hover-info">
-                        <div class="product-hover-head">
-                            <ul class="pt-links">
-                                <li>{{ $product->category ? strtoupper($product->category->name) : 'PREMIUM' }}</li>
-                                <li>FEATURED</li>
-                            </ul>
-                            <a href="#" title="" class="fvrt-product"><img src="{{ asset('images/icons/heart.svg') }}" alt="" /></a>
-                        </div>
-                        <div class="product-info-hover">
+                        <div class="product-info-hover" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; text-align: center;">
                             <h3><a href="{{ route('shop') }}" title="">{{ $product->name }}</a></h3>
-                            <span>Maro Design Clothing</span>
                             <div class="pricee">
                                 <span>₦{{ number_format($product->final_price, 0) }}</span>
                             </div>
-                            <ul class="pro-colors">
-                                <li class="clr1"></li>
-                                <li class="clr2"></li>
-                                <li class="clr3"></li>
-                                <li class="clr4"></li>
-                            </ul>
-                            <ul class="variations">
-                                <li>S</li>
-                                <li>M</li>
-                                <li>L</li>
-                                <li>XL</li>
-                            </ul>
                             <ul class="pro-buttons">
                                 <li>
                                     <form action="{{ route('cart.add') }}" method="POST" class="add-to-cart-form" style="display: inline;">
                                         @csrf
                                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                                         <input type="hidden" name="quantity" value="1">
-                                        <button type="submit" class="theme-btn" style="background: none; border: none; color: inherit; cursor: pointer; padding: 0; font: inherit;">ADD TO CART</button>
+                                        <button type="submit" class="theme-btn" style="background: #000; color: #fff; border: none; padding: 12px 24px; cursor: pointer; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; min-width: 140px; display: flex; align-items: center; justify-content: center; text-align: center;">ADD TO CART</button>
                                     </form>
                                 </li>
-                                <li><a href="#" title="" class="theme-btn quick-view-btn">QUICK VIEW</a></li>
                             </ul>
                         </div>
                     </div><!--product-hover-info-->
