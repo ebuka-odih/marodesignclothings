@@ -507,64 +507,7 @@
     </div>
 </section><!--collection-section-->
 
-<!-- Brand Philosophy -->
-<section class="collection-new">
-    <div class="container-fluid">
-        <div class="title-clt wow slideInUp">
-            <h2>STYLE IS THE <img src="{{ asset('images/resource/cl1.png') }}" alt="" /> PERFECTION POINT <img src="{{ asset('images/resource/cl2.png') }}" alt="" /> OF VIEW</h2>
-        </div>
-        <div class="flex-container wow slideInUp">
-            <div class="flex-slide accessories">
-                <h2>ACCESSORIES</h2>
-                <div class="flex-content">
-                    <h3>Premium Accessories</h3>
-                    <p>Elevate your look with our curated collection of luxury accessories</p>
-                    <a href="{{ route('shop') }}" title="" class="theme-btn">SHOP NOW</a>
-                </div>
-            </div>
-            <div class="flex-slide fashion">
-                <h2>FASHION</h2>
-                <div class="flex-content">
-                    <h3>Contemporary Style</h3>
-                    <p>Discover the latest trends in contemporary fashion design</p>
-                    <a href="{{ route('shop') }}" title="" class="theme-btn">SHOP NOW</a>
-                </div>
-            </div>
-            <div class="flex-slide sneekers">
-                <h2>FOOTWEAR</h2>
-                <div class="flex-content">
-                    <h3>Designer Footwear</h3>
-                    <p>Step into luxury with our exclusive footwear collection</p>
-                    <a href="{{ route('shop') }}" title="" class="theme-btn">SHOP NOW</a>
-                </div>
-            </div>
-            <div class="flex-slide blazer">
-                <h2>OUTERWEAR</h2>
-                <div class="flex-content">
-                    <h3>Premium Outerwear</h3>
-                    <p>Sophisticated outerwear for the modern individual</p>
-                    <a href="{{ route('shop') }}" title="" class="theme-btn">SHOP NOW</a>
-                </div>
-            </div>
-            <div class="flex-slide polo">
-                <h2>ESSENTIALS</h2>
-                <div class="flex-content">
-                    <h3>Core Essentials</h3>
-                    <p>Timeless pieces that form the foundation of your wardrobe</p>
-                    <a href="{{ route('shop') }}" title="" class="theme-btn">SHOP NOW</a>
-                </div>
-            </div>
-            <div class="flex-slide bag">
-                <h2>BAGS</h2>
-                <div class="flex-content">
-                    <h3>Luxury Bags</h3>
-                    <p>Carry sophistication with our premium bag collection</p>
-                    <a href="{{ route('shop') }}" title="" class="theme-btn">SHOP NOW</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+
 
 <!-- Final Brand Statement -->
 <section class="marquee-section v2 web-slides">
