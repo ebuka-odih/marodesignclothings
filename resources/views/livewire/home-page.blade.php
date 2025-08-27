@@ -130,12 +130,19 @@
                 display: block;
                 margin: 0;
                 padding: 0;
+                /* Remove default video controls */
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                pointer-events: none; /* Prevent clicking on video */
             }
             .video-controls {
                 position: absolute;
                 top: 15px;
                 right: 15px;
                 z-index: 10;
+                pointer-events: auto; /* Allow clicking on controls */
             }
             .mute-btn {
                 background: rgba(0, 0, 0, 0.6);
@@ -149,6 +156,7 @@
                 align-items: center;
                 justify-content: center;
                 transition: all 0.3s ease;
+                pointer-events: auto;
             }
             .mute-btn:hover {
                 background: rgba(0, 0, 0, 0.8);
@@ -156,6 +164,15 @@
             }
             .mute-btn i {
                 font-size: 12px;
+            }
+            
+            /* Mobile-specific video fixes */
+            @media (max-width: 768px) {
+                .video-container video {
+                    /* Ensure video plays inline on mobile */
+                    -webkit-playsinline: true;
+                    playsinline: true;
+                }
             }
         </style>
         
@@ -165,12 +182,34 @@
                 const muteBtn = document.getElementById('muteBtn');
                 const muteIcon = document.getElementById('muteIcon');
                 
-                // Set video to muted by default
                 if (video) {
+                    // Ensure video is muted for autoplay to work on mobile
                     video.muted = true;
+                    video.playsInline = true;
                     
-                    // Mute/Unmute functionality
-                    muteBtn.addEventListener('click', function() {
+                    // Force autoplay on mobile browsers
+                    const playPromise = video.play();
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                            console.log('Video autoplay started successfully');
+                        }).catch(error => {
+                            console.log('Autoplay prevented:', error);
+                            // Try to play again when user interacts with the page
+                            document.addEventListener('touchstart', function() {
+                                video.play().catch(e => console.log('Still cannot autoplay:', e));
+                            }, { once: true });
+                            
+                            document.addEventListener('click', function() {
+                                video.play().catch(e => console.log('Still cannot autoplay:', e));
+                            }, { once: true });
+                        });
+                    }
+                    
+                    // Mute/Unmute functionality (only volume control, no play/pause)
+                    muteBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
                         if (video.muted) {
                             video.muted = false;
                             muteIcon.className = 'fa fa-volume-up';
@@ -183,6 +222,20 @@
                     // Update icon when video loads
                     video.addEventListener('loadeddata', function() {
                         muteIcon.className = video.muted ? 'fa fa-volume-off' : 'fa fa-volume-up';
+                    });
+                    
+                    // Prevent video from being paused when clicked
+                    video.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        // Don't toggle play/pause, just return
+                        return false;
+                    });
+                    
+                    // Ensure video keeps playing
+                    video.addEventListener('pause', function() {
+                        // Auto-resume if paused
+                        video.play().catch(e => console.log('Cannot resume video:', e));
                     });
                 }
                 
@@ -364,8 +417,9 @@
 <section class="glance-banner">
     <div class="video-intro wow fadeInUp">
         <div class="video-container">
-            <video id="video1" controls autoplay="autoplay" loop muted style="margin: 0; padding: 0; display: block;">
-                <source src="{{ asset('media/v1.mp4') }}"/>
+            <video id="video1" autoplay loop muted playsinline webkit-playsinline style="margin: 0; padding: 0; display: block; width: 100%; height: auto;">
+                <source src="{{ asset('media/v1.mp4') }}" type="video/mp4"/>
+                Your browser does not support the video tag.
             </video>
             <div class="video-controls">
                 <button class="mute-btn" id="muteBtn">
