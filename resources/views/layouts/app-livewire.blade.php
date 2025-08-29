@@ -116,23 +116,7 @@
                                             <span>₦{{ number_format($item['price'], 2) }}</span>
                                         </div>
                                         <div class="quantity">
-                                            <form action="{{ route('cart.update') }}" method="POST" style="display: inline;">
-                                                @csrf
-                                                <input type="hidden" name="product_id" value="{{ $productId }}" />
-                                                <input type="hidden" name="action" value="decrease" />
-                                                <button type="submit" class="minus-btn" style="background: none; border: none; cursor: pointer;">
-                                                    <i>-</i>
-                                                </button>
-                                            </form>
-                                            <input type="text" name="name" value="{{ $item['quantity'] }}" readonly>
-                                            <form action="{{ route('cart.update') }}" method="POST" style="display: inline;">
-                                                @csrf
-                                                <input type="hidden" name="product_id" value="{{ $productId }}" />
-                                                <input type="hidden" name="action" value="increase" />
-                                                <button type="submit" class="plus-btn" style="background: none; border: none; cursor: pointer;">
-                                                    <i>+</i>
-                                                </button>
-                                            </form>
+                                            <span style="font-size: 12px; color: #666;">Qty: {{ $item['quantity'] }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -155,13 +139,13 @@
                     </div>
                     <span>Tax included <a href="#" title="">Shipping</a> calculated at checkout.</span>
                     <ul class="cart-sidebar-btns">
-                        <li><a href="{{ route('cart.index') }}" title="">View cart</a></li>
-                        <li><a href="{{ route('checkout.show') }}" title="" class="checkout">Check out</a></li>
+                        <li><a href="{{ route('cart.index') }}" title="" style="background: transparent; color: #000000; border: 1px solid #000000; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; text-align: center; width: 100%; margin-bottom: 8px;" onmouseover="this.style.background='#000000'; this.style.color='#ffffff';" onmouseout="this.style.background='transparent'; this.style.color='#000000';">View cart</a></li>
+                        <li><a href="{{ route('checkout.show') }}" title="" class="checkout" style="background: #000000; color: #ffffff; border: 1px solid #000000; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; text-align: center; width: 100%;" onmouseover="this.style.background='#333333'; this.style.color='#ffffff';" onmouseout="this.style.background='#000000'; this.style.color='#ffffff';">Check out</a></li>
                     </ul>
                 @else
                     <div class="empty-cart-footer">
                         <p>Add items to your cart to see the total</p>
-                        <a href="{{ route('shop') }}" class="theme-btn">Start Shopping</a>
+                        <a href="{{ route('shop') }}" class="theme-btn" style="background: transparent; color: #000000; border: 1px solid #000000; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; display: inline-block; text-align: center;" onmouseover="this.style.background='#000000'; this.style.color='#ffffff';" onmouseout="this.style.background='transparent'; this.style.color='#000000';">Start Shopping</a>
                     </div>
                 @endif
             </div>
@@ -316,6 +300,11 @@
                     }
                 }
                 
+                // Make toggleCart available globally
+                if (typeof window !== 'undefined') {
+                    window.toggleCart = window.toggleCart;
+                }
+                
                 // Close cart when clicking close button
                 const closeCartBtn = document.querySelector('.cls-btn');
                 if (closeCartBtn) {
@@ -340,7 +329,6 @@
                         }
                     }
                 });
-            });
                 
                 // Override any overlay-related JavaScript
                 if (window.jQuery) {

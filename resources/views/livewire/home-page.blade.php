@@ -211,6 +211,24 @@
                 fill: #ffffff !important;
             }
             
+            /* Cart sidebar buttons - force black outline style */
+            .cart-sidebar .cart-footer .cart-sidebar-btns li a {
+                background: transparent !important;
+                color: #000000 !important;
+                border: 1px solid #000000 !important;
+            }
+            
+            .cart-sidebar .cart-footer .cart-sidebar-btns li a:hover,
+            .cart-sidebar .cart-footer .cart-sidebar-btns li a.checkout {
+                background: #000000 !important;
+                color: #ffffff !important;
+                border: 1px solid #000000 !important;
+            }
+            
+            .cart-sidebar .cart-footer .cart-sidebar-btns li a:before {
+                background: #000000 !important;
+            }
+            
             /* Video controls styling */
             .video-container {
                 position: relative;

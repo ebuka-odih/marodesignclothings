@@ -122,16 +122,16 @@ class CartController extends Controller
                 'request_data' => $request->all()
             ]);
             
-            if ($request->ajax()) {
-                return response()->json(['errors' => $e->errors()], 422);
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['success' => false, 'errors' => $e->errors()], 422);
             }
             return back()->withErrors($e->errors());
         }
 
         $product = Product::find($request->product_id);
         if (!$product) {
-            if ($request->ajax()) {
-                return response()->json(['error' => 'Product not found.'], 404);
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['success' => false, 'error' => 'Product not found.'], 404);
             }
             return back()->with('cart_error', 'Product not found.');
         }
@@ -140,8 +140,8 @@ class CartController extends Controller
         $productId = $request->product_id;
 
         if (!isset($cart[$productId])) {
-            if ($request->ajax()) {
-                return response()->json(['error' => 'Product not found in cart.'], 404);
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['success' => false, 'error' => 'Product not found in cart.'], 404);
             }
             return back()->with('cart_error', 'Product not found in cart.');
         }
@@ -152,8 +152,8 @@ class CartController extends Controller
             $newQuantity = $currentQuantity + 1;
             // Check if new quantity exceeds stock
             if ($newQuantity > $product->stock) {
-                if ($request->ajax()) {
-                    return response()->json(['error' => 'Cannot increase quantity. Only ' . $product->stock . ' items available.'], 400);
+                if ($request->ajax() || $request->wantsJson()) {
+                    return response()->json(['success' => false, 'error' => 'Cannot increase quantity. Only ' . $product->stock . ' items available.'], 400);
                 }
                 return back()->with('cart_error', 'Cannot increase quantity. Only ' . $product->stock . ' items available.');
             }
@@ -164,8 +164,8 @@ class CartController extends Controller
                 unset($cart[$productId]);
                 Session::put('cart', $cart);
                 
-                if ($request->ajax()) {
-                    return response()->json(['message' => 'Item removed from cart.']);
+                if ($request->ajax() || $request->wantsJson()) {
+                    return response()->json(['success' => true, 'message' => 'Item removed from cart.']);
                 }
                 return back()->with('cart_message', 'Item removed from cart.');
             }
@@ -174,9 +174,9 @@ class CartController extends Controller
         $cart[$productId]['quantity'] = $newQuantity;
         Session::put('cart', $cart);
 
-        if ($request->ajax()) {
+        if ($request->ajax() || $request->wantsJson()) {
             \Log::info('AJAX request detected, returning JSON');
-            return response()->json(['message' => 'Quantity updated successfully!']);
+            return response()->json(['success' => true, 'message' => 'Quantity updated successfully!']);
         }
         
         \Log::info('Regular request detected, returning back');
@@ -201,8 +201,8 @@ class CartController extends Controller
                 'request_data' => $request->all()
             ]);
             
-            if ($request->ajax()) {
-                return response()->json(['errors' => $e->errors()], 422);
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['success' => false, 'errors' => $e->errors()], 422);
             }
             return back()->withErrors($e->errors());
         }
@@ -215,14 +215,14 @@ class CartController extends Controller
             unset($cart[$productId]);
             Session::put('cart', $cart);
 
-            if ($request->ajax()) {
-                return response()->json(['message' => $productName . ' removed from cart successfully!']);
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['success' => true, 'message' => $productName . ' removed from cart successfully!']);
             }
             return back()->with('cart_message', $productName . ' removed from cart successfully!');
         }
 
-        if ($request->ajax()) {
-            return response()->json(['error' => 'Product not found in cart.'], 404);
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json(['success' => false, 'error' => 'Product not found in cart.'], 404);
         }
         return back()->with('cart_error', 'Product not found in cart.');
     }

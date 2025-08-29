@@ -40,35 +40,9 @@
                             <p style="color: #65644A; font-weight: 600; font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">₦{{ number_format($item['price'], 2) }}</p>
                         </div>
 
-                        <!-- Quantity Controls -->
+                        <!-- Quantity Display (Read-only) -->
                         <div style="display: flex; align-items: center; gap: 4px;">
-                            <form action="{{ route('cart.update') }}" method="POST" style="display: inline; margin: 0;" class="cart-form">
-                                @csrf
-                                <input type="hidden" name="product_id" value="{{ $productId }}" />
-                                <input type="hidden" name="action" value="decrease" />
-                                <button type="submit" style="width: 24px; height: 24px; background: #f3f4f6; border: 1px solid #000000; color: black; border-radius: 4px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; cursor: pointer;"
-                                        onmouseover="this.style.background='#000000'; this.style.color='white';" 
-                                        onmouseout="this.style.background='#f3f4f6'; this.style.color='black';">
-                                    <svg style="width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2;" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4"></path>
-                                    </svg>
-                                </button>
-                            </form>
-                            
-                            <span style="width: 32px; text-align: center; font-size: 14px; font-weight: 600; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">{{ $item['quantity'] }}</span>
-                            
-                            <form action="{{ route('cart.update') }}" method="POST" style="display: inline; margin: 0;" class="cart-form">
-                                @csrf
-                                <input type="hidden" name="product_id" value="{{ $productId }}" />
-                                <input type="hidden" name="action" value="increase" />
-                                <button type="submit" style="width: 24px; height: 24px; background: #f3f4f6; border: 1px solid #000000; color: black; border-radius: 4px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; cursor: pointer;"
-                                        onmouseover="this.style.background='#000000'; this.style.color='white';" 
-                                        onmouseout="this.style.background='#f3f4f6'; this.style.color='black';">
-                                    <svg style="width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2;" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
-                                    </svg>
-                                </button>
-                            </form>
+                            <span style="font-size: 12px; color: #666; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">Qty: {{ $item['quantity'] }}</span>
                         </div>
 
                         <!-- Item Total -->
@@ -112,11 +86,11 @@
                 <span style="font-size: 18px; font-weight: 700; color: black; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">₦{{ number_format($subtotal, 2) }}</span>
             </div>
 
-            <a href="{{ route('checkout.show') }}" style="display: block; width: 100%; background: #000000; color: white; text-align: center; padding: 16px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; transition: background-color 0.3s ease;">
+            <a href="{{ route('checkout.show') }}" style="display: flex; align-items: center; justify-content: center; width: 100%; background: #000000; color: #ffffff; border: 1px solid #000000; text-align: center; padding: 16px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;" onmouseover="this.style.background='#333333'; this.style.color='#ffffff';" onmouseout="this.style.background='#000000'; this.style.color='#ffffff';">
                     Proceed to Checkout
                 </a>
                 
-            <a href="{{ route('index') }}" style="display: block; width: 100%; background: white; color: #000000; text-align: center; padding: 12px; border: 1px solid #000000; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin-top: 12px; transition: all 0.3s ease;">
+            <a href="{{ route('index') }}" style="display: flex; align-items: center; justify-content: center; width: 100%; background: transparent; color: #000000; text-align: center; padding: 12px; border: 1px solid #000000; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;" onmouseover="this.style.background='#000000'; this.style.color='#ffffff';" onmouseout="this.style.background='transparent'; this.style.color='#000000';">
                 Continue Shopping
                 </a>
         </div>
@@ -125,7 +99,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Handle cart form submissions
+    // Handle cart form submissions (only remove forms now)
     const cartForms = document.querySelectorAll('.cart-form');
     
     cartForms.forEach(form => {
