@@ -36,7 +36,7 @@ License: copyright commercial
 30. Trending
 31. Video
 **********************************************/
-@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&amp;family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Funnel+Sans:wght@300;400;500;600;700;800;900&amp;display=swap");
 @import url("animate.css");
 @import url("jquery.fancybox.min.css");
 @import url("all.min.css");
@@ -44,13 +44,13 @@ License: copyright commercial
 
 :root {
   --theme-color1: #000000;
-  --theme-color2: #B88669;
+  --theme-color2: #000000;
   --text-color: #3E3E3E;
   --headings-color: var(--theme-color1);
   --link-color: var(--theme-color1);
   --link-hover-color: var(--theme-color1);
-  --text-font: "Poppins", sans-serif;
-  --title-font: "Orbitron", sans-serif;
+  --text-font: "Funnel Sans", sans-serif;
+  --title-font: "Funnel Sans", sans-serif;
   --body-font-size: 16px;
   --body-line-height: 30px;
   --body-font-weight: 400;
@@ -1243,12 +1243,13 @@ p {
 
 .theme-btn {
   display: inline-block;
+  background: transparent;
   color: #000000;
   font-size: 14px;
   font-weight: 600;
   height: 56px;
   line-height: 56px;
-  border: 1px solid #B88669;
+  border: 1px solid #000000;
   border-radius: 30px;
   text-transform: uppercase;
   padding: 0 58px;
@@ -1266,8 +1267,8 @@ p {
   width: 100%;
   height: 100%;
   border-radius: 30px;
-  background: -webkit-gradient(linear, left top, right top, color-stop(27.92%, #C98663), color-stop(109.42%, #B88689));
-  background: linear-gradient(90deg, #C98663 27.92%, #B88689 109.42%);
+  background: -webkit-gradient(linear, left top, right top, color-stop(27.92%, #000000), color-stop(109.42%, #000000));
+  background: linear-gradient(90deg, #000000 27.92%, #000000 109.42%);
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
   border-radius: 30px;
@@ -1278,7 +1279,7 @@ p {
 
 .theme-btn:hover {
   color: #fff;
-  background: #b88769;
+  background: #000000;
 }
 
 .theme-btn:hover:before {
@@ -1325,7 +1326,7 @@ button {
 .slick-next {
   width: 86px;
   height: 42px;
-  border: 1px solid #b88769;
+  border: 1px solid #000000;
   border-radius: 30px;
   z-index: 99;
   top: auto;
@@ -1337,7 +1338,7 @@ button {
 
 .slick-prev:hover,
 .slick-next:hover {
-  background: #b88769;
+  background: #000000;
 }
 
 .slick-prev:hover:before,
@@ -1420,8 +1421,8 @@ button {
 }
 
 .theme-btn.v2 {
-  background: -webkit-gradient(linear, left top, right top, color-stop(27.92%, #C98663), color-stop(109.42%, #B88689));
-  background: linear-gradient(90deg, #C98663 27.92%, #B88689 109.42%);
+  background: -webkit-gradient(linear, left top, right top, color-stop(27.92%, #000000), color-stop(109.42%, #000000));
+  background: linear-gradient(90deg, #000000 27.92%, #000000 109.42%);
   color: #fff;
 }
 
@@ -5632,7 +5633,7 @@ footer .container-fluid {
   display: inline-block;
   width: 38px;
   height: 38px;
-  background-color: #B88669;
+  background-color: #000000;
   border-radius: 50%;
   line-height: 38px;
   text-align: center;
@@ -5671,7 +5672,7 @@ footer .container-fluid {
 }
 
 .cart-sidebar .cart-tabs li.active {
-  background: #B88669;
+  background: #000000;
 }
 
 .cart-sidebar .cart-tabs li.active a svg path {
@@ -7378,7 +7379,7 @@ footer .container-fluid {
   font-weight: 700;
   line-height: 50px;
   text-transform: capitalize;
-  font-family: Poppins;
+  font-family: "Funnel Sans";
   margin-bottom: 3px;
 }
 
@@ -7963,11 +7964,6 @@ footer .container-fluid {
 
 .themes-section .th-image img {
   width: 100%;
-}
-
-.themes-section .th-images {
-  margin: 0 -6px;
-  padding-right: 30px;
 }
 
 .themes-section .th-images .col-lg-6 {

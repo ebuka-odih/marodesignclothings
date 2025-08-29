@@ -155,8 +155,8 @@
                     </div>
                     <span>Tax included <a href="#" title="">Shipping</a> calculated at checkout.</span>
                     <ul class="cart-sidebar-btns">
-                        <li><a href="{{ route('cart') }}" title="">View cart</a></li>
-                        <li><a href="{{ route('checkout') }}" title="" class="checkout">Check out</a></li>
+                        <li><a href="{{ route('cart.index') }}" title="">View cart</a></li>
+                        <li><a href="{{ route('checkout.show') }}" title="" class="checkout">Check out</a></li>
                     </ul>
                 @else
                     <div class="empty-cart-footer">
@@ -240,7 +240,7 @@
             <div class="bottom-footer">
                 <div class="container">
                     <div class="copyright wow slideInUp">
-                        <p>© 2024 MDC DESIGNER - ALL RIGHTS RESERVED</p>
+                        <p>© 2025 MDC DESIGNER - ALL RIGHTS RESERVED</p>
                     </div>
                 </div>
             </div>

@@ -1875,7 +1875,7 @@
         <div class="bottom-footer">
             <div class="container">
                 <div class="copyright wow slideInUp">
-                    <p>© 2023 Glance IND - ALL RIGHTS RESERVED</p>
+                    <p>© 2025 Glance IND - ALL RIGHTS RESERVED</p>
                 </div>
             </div>
         </div>

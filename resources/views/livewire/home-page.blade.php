@@ -1,5 +1,17 @@
     <div>
         <style>
+            /* Import Funnel Sans font */
+            @import url("https://fonts.googleapis.com/css2?family=Funnel+Sans:wght@300;400;500;600;700;800;900&amp;display=swap");
+            
+            /* Force Funnel Sans font on all elements */
+            * {
+                font-family: "Funnel Sans", sans-serif !important;
+            }
+            
+            body, h1, h2, h3, h4, h5, h6, p, span, div, a, button, input, textarea, select {
+                font-family: "Funnel Sans", sans-serif !important;
+            }
+            
             /* Slider image overlay for better text visibility */
             .main-slider-slide {
                 position: relative;
@@ -42,12 +54,12 @@
             
             /* Reduce spacing between sections */
             .about-section-v2 {
-                padding: 40px 0;
+                padding: 40px 0 20px 0;
                 margin-bottom: 0;
             }
             .lookbook-section-v2 {
-                padding-top: 20px;
-                margin-top: 0;
+                padding-top: 0;
+                margin-top: -20px;
             }
             
             /* Video header styling */
@@ -114,6 +126,89 @@
                     font-size: 1rem;
                     letter-spacing: 2px;
                 }
+            }
+            
+            /* Specific heading styles to force Funnel Sans */
+            .about-content-v2 h2,
+            .sec-title h2,
+            .main-slider-content h1,
+            .video-header-content h1,
+            .video-header-content h2,
+            .cart-product-info h2,
+            .product-info h3,
+            .product-hover-info h3,
+            .about-section-v2 h2,
+            .lookbook-section-v2 h1,
+            .collection-section h2,
+            .collection-section p,
+            .marquee-section h2 {
+                font-family: "Funnel Sans", sans-serif !important;
+                font-weight: 600 !important;
+            }
+            
+            /* Force all text elements to use Funnel Sans */
+            .page-wrapper *,
+            .main-slider-v2 *,
+            .about-section-v2 *,
+            .lookbook-section-v2 *,
+            .video-header-section *,
+            .cart-section-v2 *,
+            .collection-section *,
+            .marquee-section * {
+                font-family: "Funnel Sans", sans-serif !important;
+            }
+            
+            /* Extra specific targeting for the main heading */
+            .about-content-v2 h2 {
+                font-family: "Funnel Sans", sans-serif !important;
+                font-weight: 500 !important;
+                font-size: 2.5rem !important;
+                letter-spacing: 0.05em !important;
+            }
+            
+            /* Force all buttons to be transparent with black borders */
+            .theme-btn,
+            .theme-btn:before {
+                background: transparent !important;
+                border-color: #000000 !important;
+                color: #000000 !important;
+            }
+            
+            /* Hover state - black background with white text */
+            .theme-btn:hover,
+            .theme-btn:hover:before,
+            .theme-btn.v2:hover,
+            .theme-btn.v2:hover:before {
+                background: #000000 !important;
+                border-color: #000000 !important;
+                color: #ffffff !important;
+            }
+            
+            /* Force all brown colors to black */
+            * {
+                color: inherit;
+            }
+            
+            [style*="#B88669"],
+            [style*="#b88669"],
+            [style*="#C98663"],
+            [style*="#B88689"] {
+                color: #000000 !important;
+                background-color: #000000 !important;
+                border-color: #000000 !important;
+            }
+            
+            /* Cart sidebar specific styling */
+            .cart-sidebar .cart-sidebar-header .cls-btn {
+                background-color: #000000 !important;
+            }
+            
+            .cart-sidebar .cart-tabs li.active {
+                background: #000000 !important;
+            }
+            
+            .cart-sidebar .cart-tabs li.active a svg path {
+                fill: #ffffff !important;
             }
             
             /* Video controls styling */
@@ -365,7 +460,7 @@
 <section class="about-section-v2">
     <div class="container">
         <div class="about-content-v2">
-            <h2>Maro Design - Where Style Meets Innovation</h2>
+            <h2 style="font-family: 'Funnel Sans', sans-serif !important; font-weight: 500 !important; font-size: 2.5rem !important; letter-spacing: 0.05em !important;">Maro Design - Where Style Meets Innovation</h2>
         
         </div>
     </div>
@@ -525,7 +620,7 @@
                                         @csrf
                                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                                         <input type="hidden" name="quantity" value="1">
-                                        <button type="submit" class="theme-btn" style="background: #000; color: #fff; border: none; padding: 12px 24px; cursor: pointer; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; min-width: 140px; display: flex; align-items: center; justify-content: center; text-align: center;">ADD TO CART</button>
+                                        <button type="submit" class="theme-btn" style="background: transparent; color: #000; border: 1px solid #000; padding: 12px 24px; cursor: pointer; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; min-width: 140px; display: flex; align-items: center; justify-content: center; text-align: center;" onmouseover="this.style.background='#000'; this.style.color='#fff';" onmouseout="this.style.background='transparent'; this.style.color='#000';">ADD TO CART</button>
                                     </form>
                                 </li>
                             </ul>
